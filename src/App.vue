@@ -50,7 +50,7 @@
           </div>
           <div class="image">
             <img
-              :src="require('./assets/weather/' + icon.weather)"
+              :src="require('./assets/weather/' + weather.icon)"
               alt="weather"
             />
           </div>
@@ -75,7 +75,7 @@ export default {
     return {
       errorCityFound: false,
       isDay: true,
-      getLocation: "",
+      getLocation: "Tomsk",
       weather: {
         city: "",
         country: "",
@@ -86,11 +86,97 @@ export default {
         windSpeed: "",
         humidity: "",
         overcast: "",
-      },
-      icon: {
-        weather: "Clouds.svg",
+        icon: "Clouds.svg",
       },
     };
+  },
+  created() {
+    console.log(this.getLocation);
+    const keyWeather = "36e0d61c301b666cc148f1050b14aab6";
+    const baseURL = `http://api.openweathermap.org/data/2.5/weather?q=${this.getLocation}&appid=${keyWeather}&units=metric`;
+
+    try {
+      fetch(baseURL)
+        .then((response) => response.json())
+        .then((data) => {
+          this.getLocation = "";
+          this.weather.city = data.name;
+          this.weather.country = data.sys.country;
+
+          // время не точное!!!
+          const getCurrTimeCity = () => {
+            const currHours = data.timezone / 3600;
+            let utcHours = new Date().toUTCString().slice(17, 19);
+            let utcMin = new Date().toUTCString().slice(20, 22);
+            let reasultHours = +utcHours + Math.round(+currHours);
+            reasultHours > 23
+              ? (reasultHours = reasultHours - 24)
+              : reasultHours;
+            reasultHours < 0
+              ? (reasultHours = reasultHours + 24)
+              : reasultHours;
+            return `${
+              reasultHours.toString().length === 1
+                ? `0${reasultHours}`
+                : reasultHours
+            }:${utcMin}`;
+          };
+
+          this.weather.currentTime = getCurrTimeCity();
+          this.weather.temperature = data.main.temp.toFixed(1);
+          this.weather.temperatureRealfeel = data.main.feels_like.toFixed(1);
+
+          const getWindDirection = () => {
+            let wind = "";
+            const windDir = data.wind.deg;
+            if (
+              (windDir >= 0 && windDir <= 10) ||
+              (windDir >= 351 && windDir <= 360)
+            ) {
+              wind = "north";
+            } else if (windDir >= 11 && windDir <= 80) {
+              wind = "NE";
+            } else if (windDir >= 81 && windDir <= 100) {
+              wind = "east";
+            } else if (windDir >= 101 && windDir <= 170) {
+              wind = "SE";
+            } else if (windDir >= 171 && windDir <= 190) {
+              wind = "south";
+            } else if (windDir >= 191 && windDir <= 260) {
+              wind = "SW";
+            } else if (windDir >= 261 && windDir <= 280) {
+              wind = "west";
+            } else if (windDir >= 281 && windDir <= 350) {
+              wind = "NW";
+            }
+            return wind;
+          };
+
+          this.weather.windDirect = getWindDirection();
+          this.weather.windSpeed = Math.round(data.wind.speed);
+          this.weather.humidity = Math.round(data.main.humidity);
+          this.weather.overcast = data.weather[0].description;
+
+          const weatherIcon = data.weather[0].icon;
+          if (weatherIcon.includes("n")) {
+            this.isDay = false;
+          } else {
+            this.isDay = true;
+          }
+
+          const mainWeather = data.weather[0].main;
+          // console.log(mainWeather);
+          this.weather.icon = `${mainWeather}.svg`;
+          if (mainWeather.includes("Clear")) {
+            weatherIcon.includes("d")
+              ? (this.weather.icon = `${mainWeather}-day.svg`)
+              : (this.weather.icon = `${mainWeather}-night.svg`);
+          }
+          this.errorCityFound = false;
+        });
+    } catch (error) {
+      this.errorCityFound = true;
+    }
   },
   methods: {
     getWeather: async function () {
@@ -101,7 +187,7 @@ export default {
       try {
         const response = await fetch(baseURL);
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         this.getLocation = "";
 
         this.weather.city = data.name;
@@ -166,15 +252,12 @@ export default {
 
         const mainWeather = data.weather[0].main;
         // console.log(mainWeather);
-        this.icon.weather = `${mainWeather}.svg`;
+        this.weather.icon = `${mainWeather}.svg`;
         if (mainWeather.includes("Clear")) {
-          if (weatherIcon.includes("d")) {
-            this.icon.weather = `${mainWeather}-day.svg`;
-          } else {
-            this.icon.weather = `${mainWeather}-night.svg`;
-          }
+          weatherIcon.includes("d")
+            ? (this.weather.icon = `${mainWeather}-day.svg`)
+            : (this.weather.icon = `${mainWeather}-night.svg`);
         }
-
         this.errorCityFound = false;
       } catch (error) {
         this.errorCityFound = true;
@@ -191,7 +274,13 @@ export default {
   box-sizing: border-box;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 #app {
+  min-height: 100%;
   display: flex;
   margin: 0 auto;
   color: #fff;
@@ -204,7 +293,8 @@ export default {
 #wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
+  flex: 1 1 auto;
 }
 
 #wrapper > * {
@@ -217,7 +307,7 @@ export default {
   text-shadow: 2px 2px 10px #ccc;
   background: no-repeat 0 0 / cover
       radial-gradient(rgba(198, 222, 255, 0.2) 10%, rgba(21, 58, 84, 0.6) 85%),
-    no-repeat 0 0 / cover url(./assets/Winter-day.jpg);
+    no-repeat 0 25% / cover url(./assets/Winter-day.jpg);
 }
 
 .night {
@@ -225,7 +315,7 @@ export default {
   text-shadow: 2px 2px 10px #153a54;
   background: no-repeat 0 0 / cover
       radial-gradient(rgba(198, 222, 255, 0.2) 10%, rgba(21, 58, 84, 0.6) 85%),
-    no-repeat 0 0 / cover url(./assets/Winter-night.svg);
+    no-repeat 0 20% / cover url(./assets/Winter-night.svg);
 }
 
 .weather {

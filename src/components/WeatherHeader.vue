@@ -5,14 +5,11 @@
         Sorry, but the following error occurred: {{ errorStr }}
       </span>
       <span class="local" v-if="gettingLocation">
-        <i>Getting your location...</i>
+        <b>Getting<br />your<br />location...</b>
       </span>
       <span class="local" v-if="currentLocation">
-        {{ currentLocation.coords.latitude }},
-        {{ currentLocation.coords.longitude }}
+        {{ currentLocation.address.city }}
       </span>
-
-      <!-- <span class="local">{{ currentLocation.loc }}</span> -->
     </div>
     <time class="time">{{ currentDate.time }}</time>
     <time class="date">{{ currentDate.date }}</time>
@@ -45,22 +42,16 @@ export default {
       (pos) => {
         this.gettingLocation = false;
         this.currentLocation = pos;
-        console.log(pos);
+        // console.log(pos);
 
         const latitude = pos.coords.latitude;
-        console.log(latitude);
         const longitude = pos.coords.longitude;
-        console.log(longitude);
 
         const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
 
         fetch(url)
           .then((response) => response.json())
-          .then((res) => {
-            pos = res;
-            console.log(pos);
-            console.log(pos.address.city);
-          });
+          .then((res) => (this.currentLocation = res));
       },
       (err) => {
         this.gettingLocation = false;
@@ -82,6 +73,14 @@ export default {
   gap: 25px;
   font-size: 22px;
   letter-spacing: 2px;
+}
+
+.local b {
+  display: flex;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  line-height: 16px;
 }
 
 .time {

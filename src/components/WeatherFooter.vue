@@ -1,8 +1,6 @@
 <template>
   <footer class="nasa-info">
-    <button class="nasa-btn" type="submit" @click.prevent="getNasa">
-      NASA Today
-    </button>
+    <div class="nasa-icon">NASA Today</div>
     <div class="nasa">
       <a class="nasa-link" target="_blank" :href="nasa.imgLinkUrl">
         <img class="nasa-img" :src="nasa.imgUrl" alt="nasa" />
@@ -25,19 +23,18 @@ export default {
       },
     };
   },
-  methods: {
-    getNasa: async function () {
-      const keyNasa = "NscA0buKrklyeIAikyUvalzPLnTqlQvJVssJIUgM";
-      const nasaURL = `https://api.nasa.gov/planetary/apod?api_key=${keyNasa}`;
-      const response = await fetch(nasaURL);
-      const data = await response.json();
-      console.log(data);
+  created() {
+    const keyNasa = "NscA0buKrklyeIAikyUvalzPLnTqlQvJVssJIUgM";
+    const nasaURL = `https://api.nasa.gov/planetary/apod?api_key=${keyNasa}`;
 
-      this.nasa.imgLinkUrl = data.hdurl;
-      this.nasa.imgUrl = data.url;
-      this.nasa.title = data.title;
-      this.nasa.description = data.explanation;
-    },
+    fetch(nasaURL)
+      .then((response) => response.json())
+      .then((data) => {
+        this.nasa.imgLinkUrl = data.hdurl;
+        this.nasa.imgUrl = data.url;
+        this.nasa.title = data.title;
+        this.nasa.description = data.explanation;
+      });
   },
 };
 </script>
@@ -46,13 +43,12 @@ export default {
 .nasa-info {
   position: relative;
   padding: 25px 10px;
-  background: rgba(59, 47, 64, 0.5);
+  background: rgba(47, 54, 78, 0.8);
   border: 2px solid #ffa400;
   border-radius: 4px;
-  color: #fff;
 }
 
-.nasa-btn {
+.nasa-icon {
   position: absolute;
   top: -25px;
   right: 30px;
@@ -63,16 +59,10 @@ export default {
   border: none;
   border-radius: 5px;
   font: bold 22px Raleway, sans-serif;
-  cursor: pointer;
-}
-
-.nasa-btn:active {
-  transform: scale(0.95);
-  transition: all 0.5s ease-in;
-  box-shadow: 3px 3px 10px #000;
 }
 
 .nasa {
+  color: #fff;
   font-size: 16px;
   font-weight: normal;
   text-shadow: none;
@@ -82,6 +72,6 @@ export default {
   float: left;
   width: 200px;
   height: 200px;
-  margin-right: 15px;
+  margin: 0 20px 5px 0;
 }
 </style>
