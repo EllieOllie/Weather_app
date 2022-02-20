@@ -1,69 +1,27 @@
 <template>
-  <header class="local-date-info">
-    <div class="user-location">
-      <span class="local" v-if="errorStr">
-        Sorry, but the following error occurred: {{ errorStr }}
-      </span>
-      <span class="local" v-if="gettingLocation">
-        <b>Getting<br />your<br />location...</b>
-      </span>
-      <span class="local" v-if="currentLocation">
-        {{ currentLocation.address.city }}
-      </span>
-    </div>
-    <time class="time">{{ currentDate.time }}</time>
-    <time class="date">{{ currentDate.date }}</time>
+  <header class="local-info">
+    <UserLocation />
+    <Time />
+    <Date />
   </header>
 </template>
 
 <script>
+import UserLocation from "@/components/UserLocation";
+import Time from "@/components/Time";
+import Date from "@/components/Date";
+
 export default {
-  data() {
-    return {
-      currentLocation: "",
-      gettingLocation: false,
-      errorStr: "",
-      currentDate: {
-        time: new Date().toLocaleTimeString().slice(0, -3),
-        date: new Date().toLocaleDateString(),
-      },
-    };
-  },
-  created() {
-    //do we support geolocation
-    if (!("geolocation" in navigator)) {
-      this.errorStr = "Geolocation is not available!";
-      return;
-    }
-
-    this.gettingLocation = true;
-    // get position
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        this.gettingLocation = false;
-        this.currentLocation = pos;
-        // console.log(pos);
-
-        const latitude = pos.coords.latitude;
-        const longitude = pos.coords.longitude;
-
-        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
-
-        fetch(url)
-          .then((response) => response.json())
-          .then((res) => (this.currentLocation = res));
-      },
-      (err) => {
-        this.gettingLocation = false;
-        this.errorStr = err.message;
-      }
-    );
+  components: {
+    UserLocation,
+    Time,
+    Date,
   },
 };
 </script>
 
 <style scoped>
-.local-date-info {
+.local-info {
   min-height: 70px;
   margin: 0 auto 30px;
   display: flex;
@@ -73,17 +31,5 @@ export default {
   gap: 25px;
   font-size: 22px;
   letter-spacing: 2px;
-}
-
-.local b {
-  display: flex;
-  text-align: center;
-  font-size: 12px;
-  letter-spacing: 0.5px;
-  line-height: 16px;
-}
-
-.time {
-  font-size: 50px;
 }
 </style>

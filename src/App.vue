@@ -99,6 +99,7 @@ export default {
       fetch(baseURL)
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           this.getLocation = "";
           this.weather.city = data.name;
           this.weather.country = data.sys.country;

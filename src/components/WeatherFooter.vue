@@ -1,6 +1,9 @@
 <template>
   <footer class="nasa-info">
-    <div class="nasa-icon">NASA Today</div>
+    <div class="nasa-icon">
+      NASA Today
+      <img src="../assets/nasa.svg" alt="nasa-logo" />
+    </div>
     <div class="nasa">
       <a class="nasa-link" target="_blank" :href="nasa.imgLinkUrl">
         <img class="nasa-img" :src="nasa.imgUrl" alt="nasa" />
@@ -54,11 +57,18 @@ export default {
   right: 30px;
   padding: 10px 20px;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   background-color: #ffa400;
   box-shadow: 2px 2px 10px #000;
   border: none;
   border-radius: 5px;
   font: bold 22px Raleway, sans-serif;
+}
+
+.nasa-icon img {
+  width: 35px;
 }
 
 .nasa {
