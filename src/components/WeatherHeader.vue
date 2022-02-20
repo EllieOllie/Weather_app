@@ -23,9 +23,9 @@
 export default {
   data() {
     return {
-      currentLocation: null,
+      currentLocation: "",
       gettingLocation: false,
-      errorStr: null,
+      errorStr: "",
       currentDate: {
         time: new Date().toLocaleTimeString().slice(0, -3),
         date: new Date().toLocaleDateString(),
@@ -52,30 +52,15 @@ export default {
         const longitude = pos.coords.longitude;
         console.log(longitude);
 
-        const url =
-          "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address";
-        const token = "40786c626ec6fe8d689c47e1c540c1cca57d148b";
-        const query = { lat: `${latitude}`, lon: `${longitude}` };
+        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
 
-        const options = {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: "Token " + token,
-          },
-          body: JSON.stringify(query),
-        };
-
-        fetch(url, options)
+        fetch(url)
           .then((response) => response.json())
-          .then((result) => {
-            console.log(result);
-            const locality = result.suggestions[0].data.city;
-            console.log(locality);
-          })
-          .catch((error) => console.log("error", error));
+          .then((res) => {
+            pos = res;
+            console.log(pos);
+            console.log(pos.address.city);
+          });
       },
       (err) => {
         this.gettingLocation = false;
