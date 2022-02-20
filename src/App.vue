@@ -9,7 +9,8 @@
             <input
               type="text"
               placeholder="Enter a city..."
-              autocomplete="off"
+              autofocus
+              autocomplete="on"
               v-model="getLocation"
             />
           </form>
@@ -106,7 +107,7 @@ export default {
         this.weather.city = data.name;
         this.weather.country = data.sys.country;
 
-        //! время не точное!!!
+        // время не точное!!!
         const getCurrTimeCity = () => {
           const currHours = data.timezone / 3600;
           let utcHours = new Date().toUTCString().slice(17, 19);
@@ -358,8 +359,8 @@ input:focus::-webkit-input-placeholder {
 
 .image img {
   position: absolute;
-  top: -40px;
-  right: -15px;
+  top: -60px;
+  right: -35px;
   width: 250px;
   height: 250px;
   z-index: 10;
