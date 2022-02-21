@@ -1,21 +1,25 @@
 <template>
   <header class="local-info">
     <UserLocation />
-    <Time />
-    <Date />
+    <time class="time">{{ getCurrentTime }}</time>
+    <time class="date">{{ getCurrentDate }}</time>
   </header>
 </template>
 
 <script>
 import UserLocation from "@/components/UserLocation";
-import Time from "@/components/Time";
-import Date from "@/components/Date";
 
 export default {
   components: {
     UserLocation,
-    Time,
-    Date,
+  },
+  computed: {
+    getCurrentTime() {
+      return new Date().toLocaleTimeString().slice(0, -3);
+    },
+    getCurrentDate() {
+      return new Date().toLocaleDateString();
+    },
   },
 };
 </script>
@@ -31,5 +35,8 @@ export default {
   gap: 25px;
   font-size: 22px;
   letter-spacing: 2px;
+}
+.time {
+  font-size: 50px;
 }
 </style>

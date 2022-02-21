@@ -16,6 +16,7 @@
 export default {
   data() {
     return {
+      apiBaseUrl: "https://nominatim.openstreetmap.org/reverse?format=jsonv2",
       currentLocation: "",
       gettingLocation: false,
       errorStr: "",
@@ -39,9 +40,7 @@ export default {
         const latitude = pos.coords.latitude;
         const longitude = pos.coords.longitude;
 
-        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
-
-        fetch(url)
+        fetch(`${this.apiBaseUrl}&lat=${latitude}&lon=${longitude}`)
           .then((response) => response.json())
           .then((res) => (this.currentLocation = res));
       },
