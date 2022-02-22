@@ -34,7 +34,6 @@
             Current time: {{ weather.currentTime }}
           </span>
         </div>
-
         <div class="weather-info">
           <div class="summary">
             <div class="temperature">
@@ -76,7 +75,7 @@ export default {
       apiBaseURL: "http://api.openweathermap.org/data/2.5/",
       errorCityFound: false,
       isDay: true,
-      inputQuery: "Tomsk",
+      inputQuery: "Томск",
       weather: {
         city: "",
         country: "",
@@ -91,8 +90,8 @@ export default {
       },
     };
   },
-  created() {
-    console.log(this.weather.city);
+  mounted() {
+    this.getWeather();
   },
   methods: {
     getWeather: async function () {
@@ -318,15 +317,13 @@ input:focus::-webkit-input-placeholder {
   top: -60px;
   right: -35px;
   width: 250px;
-  height: 250px;
   z-index: 10;
 }
 @media (max-width: 420px) {
   .image img {
-    top: -35px;
+    top: 5px;
     right: -50px;
-    width: 200px;
-    height: 200px;
+    width: 165px;
   }
 }
 </style>

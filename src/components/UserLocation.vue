@@ -22,33 +22,38 @@ export default {
       errorStr: "",
     };
   },
-  created() {
-    //do we support geolocation
-    if (!("geolocation" in navigator)) {
-      this.errorStr = "Geolocation is not available!";
-      return;
-    }
-
-    this.gettingLocation = true;
-    // get position
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        this.gettingLocation = false;
-        this.currentLocation = pos;
-        // console.log(pos);
-
-        const latitude = pos.coords.latitude;
-        const longitude = pos.coords.longitude;
-
-        fetch(`${this.apiBaseUrl}&lat=${latitude}&lon=${longitude}`)
-          .then((response) => response.json())
-          .then((res) => (this.currentLocation = res));
-      },
-      (err) => {
-        this.gettingLocation = false;
-        this.errorStr = err.message;
+  mounted() {
+    this.getUserLoc();
+  },
+  methods: {
+    getUserLoc() {
+      //do we support geolocation
+      if (!("geolocation" in navigator)) {
+        this.errorStr = "Geolocation is not available!";
+        return;
       }
-    );
+
+      this.gettingLocation = true;
+      // get position
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          this.gettingLocation = false;
+          this.currentLocation = pos;
+          // console.log(pos);
+
+          const latitude = pos.coords.latitude;
+          const longitude = pos.coords.longitude;
+
+          fetch(`${this.apiBaseUrl}&lat=${latitude}&lon=${longitude}`)
+            .then((response) => response.json())
+            .then((res) => (this.currentLocation = res));
+        },
+        (err) => {
+          this.gettingLocation = false;
+          this.errorStr = err.message;
+        }
+      );
+    },
   },
 };
 </script>
