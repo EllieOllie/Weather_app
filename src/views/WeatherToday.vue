@@ -1,9 +1,9 @@
 <template>
-  <div id="wrapper" :class="isDay ? 'day' : 'night'">
+  <div id="wrapper" :class="isDay ? 'day' : 'night'" v-cloak>
     <WeatherHeader />
     <main class="weather">
       <div class="container-weather">
-        <h1 class="title">Weather Today</h1>
+        <h2 class="title">Weather Today</h2>
         <div class="search-form">
           <form class="get-location" @submit.prevent="getWeather">
             <input
@@ -175,25 +175,9 @@ export default {
 };
 </script>
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-html,
-body {
-  height: 100%;
-}
-#app {
-  min-height: 100%;
-  display: flex;
-  margin: 0 auto;
-  color: #fff;
-  font-family: Raleway, Verdana, sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.5;
+<style scoped>
+[v-cloak] {
+  display: none;
 }
 #wrapper {
   display: flex;
@@ -225,7 +209,7 @@ body {
   justify-content: center;
   align-items: center;
   gap: 25px;
-  margin: 0 auto 35px;
+  flex: 1 1 auto;
 }
 .container-weather {
   display: flex;
@@ -240,6 +224,7 @@ body {
   font-family: Calistoga;
   font-size: 50px;
   letter-spacing: 1.5px;
+  line-height: 50px;
   text-shadow: 2px 2px 10px #2e3636;
 }
 .search-form {
@@ -296,13 +281,14 @@ input:focus::-webkit-input-placeholder {
   font-size: 16px;
 }
 .weather-content {
-  min-width: 450px;
+  width: 450px;
+  min-width: 320px;
   display: flex;
   flex-direction: column;
   padding: 20px 40px;
   border-radius: 10px;
   box-shadow: inset 0 0 20px 10px #91a0b4;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(221, 220, 220, 0.55);
 }
 .city {
   font-size: 32px;
@@ -334,5 +320,13 @@ input:focus::-webkit-input-placeholder {
   width: 250px;
   height: 250px;
   z-index: 10;
+}
+@media (max-width: 420px) {
+  .image img {
+    top: -35px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+  }
 }
 </style>
