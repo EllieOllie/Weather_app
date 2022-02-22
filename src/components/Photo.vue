@@ -1,5 +1,5 @@
 <template>
-  <div class="photo-wrapper">
+  <div class="photo-wrapper" v-if="photo">
     <div class="photo-container">
       <a :href="photo.links.html" target="_blank">
         <img id="unsplashImage" :src="photo.urls.regular" />
@@ -23,6 +23,9 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  created() {
+    console.log(this.photo);
   },
 };
 </script>
