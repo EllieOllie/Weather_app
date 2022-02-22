@@ -41,14 +41,25 @@ export default {
   width: 100%;
   border: 4px solid #000;
 }
+.photo-container img:hover {
+  border: 4px solid #ccd755;
+  transition: 0.7s ease-out;
+}
 .title {
   color: #fff;
   background: #000;
   text-align: center;
+  font-size: 14px;
   font-weight: normal;
+  letter-spacing: 1.1px;
 }
 a {
   text-decoration: none;
   color: #fff;
+}
+a:hover {
+  color: #ccd755;
+  font-weight: bold;
+  transition: all 0.7s ease-out;
 }
 </style>
