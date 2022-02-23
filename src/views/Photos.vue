@@ -4,7 +4,7 @@
     <p class="subtitle">Let's go to find any photo</p>
     <PhotoSearchForm />
     <div class="container">
-      <Photo v-for="photo in photos" :photo="photo" :key="photo.index" />
+      <Photo :photo="photo" />
     </div>
   </div>
 </template>
@@ -20,21 +20,23 @@ export default {
   },
   data() {
     return {
-      photos: [],
-      unsplashUrlApi: "https://api.unsplash.com/photos/",
+      photo: {},
+      unsplashBaseUrl: "https://api.unsplash.com/photos/",
       unsplashAccessKey: "pSBNMKu-4dNX_ePbWQ_XhiLhikczjUqOTCABxOCDkmE",
     };
   },
-  mounted() {
+  created() {
     this.fetchRandomPhoto();
   },
   methods: {
     fetchRandomPhoto() {
       this.axios
-        .get(`${this.unsplashUrlApi}?client_id=${this.unsplashAccessKey}`)
+        .get(
+          `${this.unsplashBaseUrl}random/?client_id=${this.unsplashAccessKey}`
+        )
         .then((response) => {
-          this.photos = response.data;
-          console.log(response.data);
+          this.photo = response.data;
+          // console.log(response.data);
         });
     },
   },

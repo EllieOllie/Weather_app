@@ -6,6 +6,9 @@
       </a>
     </div>
     <p class="title">
+      <span>
+        {{ photo.location.name }}
+      </span>
       by
       <a :href="photo.user.portfolio_url" target="_blank">
         {{ photo.user.name }}
@@ -29,7 +32,12 @@ export default {
 
 <style scoped>
 .photo-wrapper {
-  margin-bottom: 15px;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 15px;
 }
 .photo-container {
   display: flex;
