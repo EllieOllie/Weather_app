@@ -1,11 +1,14 @@
 <template>
-  <div class="photo-wrapper" v-if="photo">
+  <div class="photo-wrapper">
     <div class="photo-container">
       <a :href="photo.links.html" target="_blank">
         <img id="unsplashImage" :src="photo.urls.regular" />
       </a>
     </div>
     <p class="title">
+      <span>
+        {{ photo.location.name }}
+      </span>
       by
       <a :href="photo.user.portfolio_url" target="_blank">
         {{ photo.user.name }}
@@ -24,15 +27,17 @@ export default {
       required: true,
     },
   },
-  created() {
-    console.log(this.photo);
-  },
 };
 </script>
 
 <style scoped>
 .photo-wrapper {
-  margin-bottom: 15px;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 15px;
 }
 .photo-container {
   display: flex;

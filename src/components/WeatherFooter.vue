@@ -5,11 +5,11 @@
       <img src="../assets/nasa.svg" alt="nasa-logo" />
     </div>
     <div class="nasa">
-      <a class="nasa-link" target="_blank" :href="nasa.imgLinkUrl">
-        <img class="nasa-img" :src="nasa.imgUrl" alt="nasa" />
+      <a class="nasa-link" target="_blank" :href="nasa.hdurl">
+        <img class="nasa-img" :src="nasa.url" alt="nasa" />
       </a>
       <h3 class="nasa-title">{{ nasa.title }}</h3>
-      <p class="nasa-description">{{ nasa.description }}</p>
+      <p class="nasa-description">{{ nasa.explanation }}</p>
     </div>
   </footer>
 </template>
@@ -18,26 +18,23 @@
 export default {
   data() {
     return {
-      nasa: {
-        imgLinkUrl: "",
-        imgUrl: "",
-        title: "",
-        description: "",
-      },
+      nasa: {},
+      keyNasa: "NscA0buKrklyeIAikyUvalzPLnTqlQvJVssJIUgM",
+      nasaBaseURL: "https://api.nasa.gov/planetary/",
     };
   },
   created() {
-    const keyNasa = "NscA0buKrklyeIAikyUvalzPLnTqlQvJVssJIUgM";
-    const nasaURL = `https://api.nasa.gov/planetary/apod?api_key=${keyNasa}`;
-
-    fetch(nasaURL)
-      .then((response) => response.json())
-      .then((data) => {
-        this.nasa.imgLinkUrl = data.hdurl;
-        this.nasa.imgUrl = data.url;
-        this.nasa.title = data.title;
-        this.nasa.description = data.explanation;
-      });
+    this.fetchNasaInfo();
+  },
+  methods: {
+    fetchNasaInfo() {
+      this.axios
+        .get(`${this.nasaBaseURL}apod?api_key=${this.keyNasa}`)
+        .then((response) => {
+          this.nasa = response.data;
+          // console.log(response.data);
+        });
+    },
   },
 };
 </script>

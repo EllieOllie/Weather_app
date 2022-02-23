@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       photo: {},
-      unsplashUrlApi: "https://api.unsplash.com/photos/",
+      unsplashBaseUrl: "https://api.unsplash.com/photos/",
       unsplashAccessKey: "pSBNMKu-4dNX_ePbWQ_XhiLhikczjUqOTCABxOCDkmE",
     };
   },
@@ -32,7 +32,7 @@ export default {
     fetchRandomPhoto() {
       this.axios
         .get(
-          `${this.unsplashUrlApi}random/?client_id=${this.unsplashAccessKey}`
+          `${this.unsplashBaseUrl}random/?client_id=${this.unsplashAccessKey}`
         )
         .then((response) => {
           this.photo = response.data;
