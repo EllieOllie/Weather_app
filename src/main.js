@@ -1,9 +1,7 @@
 import { createApp } from "vue";
-// import Vue from "vue";
 import App from "./App.vue";
-// import router from "./router";
-// import VueGeolocation from "vue-browser-geolocation";
+import router from "./router";
+import axios from "axios";
+import VueAxios from "vue-axios";
 
-// Vue.use(VueGeolocation);
-
-createApp(App).mount("#app");
+createApp(App).use(router).use(VueAxios, axios).mount("#app");
