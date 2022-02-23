@@ -64,6 +64,7 @@ export default {
 a {
   text-decoration: none;
   color: #fff;
+  cursor: pointer;
 }
 a:hover {
   color: #ccd755;

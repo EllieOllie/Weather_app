@@ -1,16 +1,56 @@
 <template>
   <div class="wrap-form">
-    <form class="search">
-      <input type="text" placeholder="Enter..." />
-      <button class="search-btn">
-        <img src="../assets/find.svg" alt="search" />
-      </button>
+    <form class="search" @submit.prevent="checkForm">
+      <div class="search-container">
+        <input type="text" placeholder="Enter..." v-model="inputQuery" />
+        <button class="search-btn" v-if="inputQuery !== ''">
+          <img src="../assets/find.svg" alt="search" />
+        </button>
+      </div>
+      <div class="error" v-if="errors.length">
+        <b v-if="errors.length > 1">Please, correct the errors:</b>
+        <ul>
+          <li v-for="(error, index) in errors" :key="error[index]">
+            {{ error }}
+          </li>
+        </ul>
+      </div>
     </form>
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      errors: [],
+      inputQuery: null,
+    };
+  },
+  methods: {
+    getInputQuery() {
+      console.log(this.inputQuery);
+      this.inputQuery = "";
+    },
+    checkForm() {
+      if (this.inputQuery === "") {
+        return true;
+      }
+      this.errors = [];
+      if (this.inputQuery === null) {
+        this.errors.push("Value should not be empty!");
+      }
+    },
+  },
+};
+</script>
+
 <style scoped>
 .search {
+  display: flex;
+  flex-direction: column;
+}
+.search-container {
   display: flex;
   gap: 15px;
 }
@@ -56,5 +96,14 @@ input:focus::-webkit-input-placeholder {
 .search-btn img {
   width: 36px;
   padding: 2px 4px;
+}
+.error {
+  text-align: center;
+  color: red;
+  font-size: 14px;
+  font-weight: normal;
+}
+.error ul {
+  list-style: none;
 }
 </style>

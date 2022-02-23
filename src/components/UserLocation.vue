@@ -32,7 +32,6 @@ export default {
         this.errorStr = "Geolocation is not available!";
         return;
       }
-
       this.gettingLocation = true;
       // get position
       navigator.geolocation.getCurrentPosition(
@@ -40,13 +39,11 @@ export default {
           this.gettingLocation = false;
           this.currentLocation = pos;
           // console.log(pos);
-
           const latitude = pos.coords.latitude;
           const longitude = pos.coords.longitude;
-
           fetch(`${this.apiBaseUrl}&lat=${latitude}&lon=${longitude}`)
             .then((response) => response.json())
-            .then((res) => (this.currentLocation = res));
+            .then((data) => (this.currentLocation = data));
         },
         (err) => {
           this.gettingLocation = false;

@@ -1,6 +1,6 @@
 <template>
   <footer class="nasa-info">
-    <div class="nasa-icon">
+    <div class="nasa-icon" :title="message">
       NASA Today
       <img src="../assets/nasa.svg" alt="nasa-logo" />
     </div>
@@ -19,6 +19,10 @@ export default {
   data() {
     return {
       nasa: {},
+      message:
+        "Image of the day from NASA (" +
+        new Date().toLocaleString().slice(0, 10) +
+        ")",
       keyNasa: "NscA0buKrklyeIAikyUvalzPLnTqlQvJVssJIUgM",
       nasaBaseURL: "https://api.nasa.gov/planetary/",
     };
