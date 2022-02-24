@@ -33,21 +33,17 @@ body {
 #nav {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
   text-align: center;
 }
 .link {
+  width: 50%;
+  padding: 15px 0;
   position: relative;
   color: #fff;
   cursor: pointer;
   text-decoration: none;
   transition: 1s;
-}
-.link:first-child {
-  padding: 15px 35px;
-}
-.link:last-child {
-  padding: 15px 5px;
 }
 .link:before,
 .link:after {

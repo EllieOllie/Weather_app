@@ -2,7 +2,10 @@
   <div class="wrapper">
     <h2 class="title">Collection of photos</h2>
     <p class="subtitle">Let's go to find any photo</p>
-    <PhotoSearchForm />
+    <PhotoSearchForm
+      :unsplashBaseUrl="unsplashBaseUrl"
+      :unsplashAccessKey="unsplashAccessKey"
+    />
     <div class="container">
       <Photo :photo="photo" />
     </div>
@@ -21,18 +24,18 @@ export default {
   data() {
     return {
       photo: {},
-      unsplashBaseUrl: "https://api.unsplash.com/photos/",
+      unsplashBaseUrl: "https://api.unsplash.com/",
       unsplashAccessKey: "pSBNMKu-4dNX_ePbWQ_XhiLhikczjUqOTCABxOCDkmE",
     };
   },
   created() {
-    this.fetchRandomPhoto();
+    this.getRandomPhoto();
   },
   methods: {
-    fetchRandomPhoto() {
+    getRandomPhoto() {
       this.axios
         .get(
-          `${this.unsplashBaseUrl}random/?client_id=${this.unsplashAccessKey}`
+          `${this.unsplashBaseUrl}photos/random/?client_id=${this.unsplashAccessKey}`
         )
         .then((response) => {
           this.photo = response.data;

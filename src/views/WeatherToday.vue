@@ -193,14 +193,14 @@ export default {
   text-shadow: 2px 2px 10px #ccc;
   background: no-repeat 0 0 / cover
       radial-gradient(rgba(198, 222, 255, 0.2) 10%, rgba(21, 58, 84, 0.6) 85%),
-    no-repeat 0 25% / cover url(../assets/Cold-day.svg);
+    no-repeat 2% 25% / cover url(../assets/Cold-day.svg);
 }
 .night {
   color: #fff;
   text-shadow: 2px 2px 10px #153a54;
   background: no-repeat 0 0 / cover
       radial-gradient(rgba(198, 222, 255, 0.2) 10%, rgba(21, 58, 84, 0.6) 85%),
-    no-repeat 0 20% / cover url(../assets/Cold-night.svg);
+    no-repeat 2% 20% / cover url(../assets/Cold-night.svg);
 }
 .weather {
   display: flex;

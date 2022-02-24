@@ -1,9 +1,18 @@
 <template>
   <div class="wrap-form">
-    <form class="search" @submit.prevent="checkForm">
+    <form
+      class="search"
+      @submit.prevent="checkForm"
+      @submit="getPhotosCollection"
+    >
       <div class="search-container">
-        <input type="text" placeholder="Enter..." v-model="inputQuery" />
-        <button class="search-btn" v-if="inputQuery !== ''">
+        <input
+          type="text"
+          placeholder="Enter..."
+          autofocus
+          v-model="inputQuery"
+        />
+        <button class="search-btn">
           <img src="../assets/find.svg" alt="search" />
         </button>
       </div>
@@ -21,16 +30,38 @@
 
 <script>
 export default {
+  props: {
+    unsplashBaseUrl: {
+      required: true,
+    },
+    unsplashAccessKey: {
+      required: true,
+    },
+  },
   data() {
     return {
       errors: [],
-      inputQuery: null,
+      inputQuery: "",
+      photos: [],
     };
   },
+  // created() {
+  //   this.getQuery();
+  // },
   methods: {
-    getInputQuery() {
-      console.log(this.inputQuery);
-      this.inputQuery = "";
+    // getQuery() {
+    //   console.log(this.inputQuery);
+    //   this.inputQuery = "";
+    // },
+    getPhotosCollection() {
+      this.axios
+        .get(
+          `${this.unsplashBaseUrl}search/collections/?client_id=${this.unsplashAccessKey}&query=${this.inputQuery}`
+        )
+        .then((response) => {
+          this.photos = response.data;
+          console.log(response.data);
+        });
     },
     checkForm() {
       if (this.inputQuery === "") {
@@ -98,8 +129,8 @@ input:focus::-webkit-input-placeholder {
   padding: 2px 4px;
 }
 .error {
-  text-align: center;
   color: red;
+  text-align: center;
   font-size: 14px;
   font-weight: normal;
 }

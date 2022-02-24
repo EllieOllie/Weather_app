@@ -32,7 +32,6 @@ export default {
 
 <style scoped>
 .photo-wrapper {
-  width: 35%;
   display: flex;
   flex-direction: column;
   justify-content: center;
