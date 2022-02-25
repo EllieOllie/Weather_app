@@ -1,10 +1,6 @@
 <template>
   <div class="wrap-form">
-    <form
-      class="search"
-      @submit.prevent="checkForm"
-      @submit="getPhotosCollection"
-    >
+    <form class="search" @submit.prevent="checkForm">
       <div class="search-container">
         <input
           type="text"
@@ -12,18 +8,11 @@
           autofocus
           v-model="inputQuery"
         />
-        <button class="search-btn">
+        <button class="search-btn" @click="getQuery">
           <img src="../assets/find.svg" alt="search" />
         </button>
       </div>
-      <div class="error" v-if="errors.length">
-        <b v-if="errors.length > 1">Please, correct the errors:</b>
-        <ul>
-          <li v-for="(error, index) in errors" :key="error[index]">
-            {{ error }}
-          </li>
-        </ul>
-      </div>
+      <p class="error" v-if="errorInputEmpty">Value should not be empty!</p>
     </form>
   </div>
 </template>
@@ -40,19 +29,20 @@ export default {
   },
   data() {
     return {
-      errors: [],
+      errorInputEmpty: false,
       inputQuery: "",
       photos: [],
+      // cors: "https://cors-anywhere.herokuapp.com/", // если опять будет ошибка cors
     };
   },
   // created() {
   //   this.getQuery();
   // },
   methods: {
-    // getQuery() {
-    //   console.log(this.inputQuery);
-    //   this.inputQuery = "";
-    // },
+    getQuery() {
+      console.log(this.inputQuery);
+      // this.inputQuery = "";
+    },
     getPhotosCollection() {
       this.axios
         .get(
@@ -64,12 +54,12 @@ export default {
         });
     },
     checkForm() {
-      if (this.inputQuery === "") {
+      if (this.inputQuery.length !== 0) {
         return true;
       }
-      this.errors = [];
-      if (this.inputQuery === null) {
-        this.errors.push("Value should not be empty!");
+      this.errorInputEmpty = false;
+      if (this.inputQuery.length === 0) {
+        this.errorInputEmpty = true;
       }
     },
   },
