@@ -37,8 +37,7 @@ export default {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           this.gettingLocation = false;
-          this.currentLocation = pos;
-          // console.log(pos);
+
           const latitude = pos.coords.latitude;
           const longitude = pos.coords.longitude;
           fetch(`${this.apiBaseUrl}&lat=${latitude}&lon=${longitude}`)

@@ -38,7 +38,7 @@ body {
 }
 .link {
   width: 50%;
-  padding: 15px 0;
+  padding: 25px 0;
   position: relative;
   color: #fff;
   cursor: pointer;

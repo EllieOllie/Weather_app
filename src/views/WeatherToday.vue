@@ -22,37 +22,42 @@
             <img src="../assets/find-location.svg" alt="search" />
           </button>
         </div>
-        <p class="error" v-if="errorCityFound">No city found!</p>
+        <p class="error" v-if="errorCityFound">City not found!</p>
       </div>
       <div class="weather-content">
-        <div class="location-info">
-          <h2 class="city">
-            {{ weather.city }},
-            <span class="country">{{ weather.country }}</span>
-          </h2>
-          <span class="current-time">
-            Current time: {{ weather.currentTime }}
-          </span>
-        </div>
-        <div class="weather-info">
-          <div class="summary">
-            <div class="temperature">
-              <p class="temperature-now">{{ weather.temperature }}&deg;C</p>
-              <p class="temperature-realfeel">
-                Realfeel: {{ weather.temperatureRealfeel }} &deg;C
-              </p>
-            </div>
-            <p class="wind">
-              wind {{ weather.windDirect }}, {{ weather.windSpeed }} m/s
-            </p>
-            <p class="humidity">humidity {{ weather.humidity }}%</p>
-            <p class="overcast">{{ weather.overcast }}</p>
+        <p v-if="errorWeatherInfo === true" class="no-info">
+          Weather information...
+        </p>
+        <div v-if="errorWeatherInfo === false" class="info">
+          <div class="location-info">
+            <h2 class="city">
+              {{ weather.city }},
+              <span class="country">{{ weather.country }}</span>
+            </h2>
+            <span class="current-time">
+              Current time: {{ weather.currentTime }}
+            </span>
           </div>
-          <div class="image">
-            <img
-              :src="require('../assets/weather/' + weather.icon)"
-              alt="weather"
-            />
+          <div class="weather-info">
+            <div class="summary">
+              <div class="temperature">
+                <p class="temperature-now">{{ weather.temperature }}&deg;C</p>
+                <p class="temperature-realfeel">
+                  Realfeel: {{ weather.temperatureRealfeel }} &deg;C
+                </p>
+              </div>
+              <p class="wind">
+                wind {{ weather.windDirect }}, {{ weather.windSpeed }} m/s
+              </p>
+              <p class="humidity">humidity {{ weather.humidity }}%</p>
+              <p class="overcast">{{ weather.overcast }}</p>
+            </div>
+            <div class="image">
+              <img
+                :src="require('../assets/weather/' + weather.icon)"
+                alt="weather"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -74,8 +79,9 @@ export default {
       keyWeather: "36e0d61c301b666cc148f1050b14aab6",
       apiBaseURL: "http://api.openweathermap.org/data/2.5/",
       errorCityFound: false,
+      errorWeatherInfo: true,
       isDay: true,
-      inputQuery: "Томск",
+      inputQuery: "",
       weather: {
         city: "",
         country: "",
@@ -91,11 +97,12 @@ export default {
     };
   },
   mounted() {
-    this.getWeather();
+    // this.getWeather();
   },
   methods: {
     getWeather: async function () {
       // console.log(this.inputQuery);
+      this.errorWeatherInfo = true;
       try {
         const response = await fetch(
           `${this.apiBaseURL}weather?q=${this.inputQuery}&appid=${this.keyWeather}&units=metric`
@@ -165,8 +172,10 @@ export default {
             ? (this.weather.icon = `${mainWeather}-day.svg`)
             : (this.weather.icon = `${mainWeather}-night.svg`);
         }
+        this.errorWeatherInfo = false;
         this.errorCityFound = false;
       } catch (error) {
+        this.errorWeatherInfo = true;
         this.errorCityFound = true;
       }
     },
@@ -186,7 +195,7 @@ export default {
 }
 #wrapper > * {
   width: 90%;
-  margin: 15px auto 25px;
+  margin: 0 auto 25px;
 }
 .day {
   color: #071d2c;
@@ -216,7 +225,7 @@ export default {
   align-items: center;
 }
 .title {
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
   color: #ffa400;
   text-align: center;
   word-wrap: break-word;
@@ -280,6 +289,7 @@ input:focus::-webkit-input-placeholder {
   font-size: 16px;
 }
 .weather-content {
+  min-height: 300px;
   width: 450px;
   min-width: 320px;
   display: flex;
@@ -288,6 +298,10 @@ input:focus::-webkit-input-placeholder {
   border-radius: 10px;
   box-shadow: inset 0 0 20px 10px #91a0b4;
   background: rgba(221, 220, 220, 0.55);
+}
+.no-info {
+  display: flex;
+  justify-content: center;
 }
 .city {
   font-size: 32px;

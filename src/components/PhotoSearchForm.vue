@@ -20,10 +20,7 @@
 <script>
 export default {
   props: {
-    unsplashBaseUrl: {
-      required: true,
-    },
-    unsplashAccessKey: {
+    getPhotosCollection: {
       required: true,
     },
   },
@@ -31,27 +28,15 @@ export default {
     return {
       errorInputEmpty: false,
       inputQuery: "",
-      photos: [],
-      // cors: "https://cors-anywhere.herokuapp.com/", // если опять будет ошибка cors
     };
   },
-  // created() {
-  //   this.getQuery();
-  // },
   methods: {
     getQuery() {
-      console.log(this.inputQuery);
+      this.getPhotosCollection({
+        inputQuery: this.inputQuery,
+      });
+      // console.log(this.inputQuery);
       // this.inputQuery = "";
-    },
-    getPhotosCollection() {
-      this.axios
-        .get(
-          `${this.unsplashBaseUrl}search/collections/?client_id=${this.unsplashAccessKey}&query=${this.inputQuery}`
-        )
-        .then((response) => {
-          this.photos = response.data;
-          console.log(response.data);
-        });
     },
     checkForm() {
       if (this.inputQuery.length !== 0) {

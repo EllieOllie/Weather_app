@@ -2,10 +2,7 @@
   <div class="wrapper">
     <h2 class="title">Collection of photos</h2>
     <p class="subtitle">Let's go to find any photo</p>
-    <PhotoSearchForm
-      :unsplashBaseUrl="unsplashBaseUrl"
-      :unsplashAccessKey="unsplashAccessKey"
-    />
+    <PhotoSearchForm :getPhotosCollection="getPhotosCollection" />
     <div class="container">
       <Photo :photo="photo" />
     </div>
@@ -24,6 +21,7 @@ export default {
   data() {
     return {
       photo: {},
+      photos: [],
       unsplashBaseUrl: "https://api.unsplash.com/",
       unsplashAccessKey: "pSBNMKu-4dNX_ePbWQ_XhiLhikczjUqOTCABxOCDkmE",
     };
@@ -43,6 +41,17 @@ export default {
         });
     },
   },
+  getPhotosCollection() {
+    this.axios
+      .get(
+        `${this.unsplashBaseUrl}search/collections/?client_id=${this.unsplashAccessKey}&query=${this.inputQuery}`
+      )
+      .then((response) => {
+        this.photos = response.data;
+        console.log(response.data);
+      });
+    this.inputQuery = "";
+  },
 };
 </script>
 
@@ -52,11 +61,14 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px 0;
   color: #000;
   background-color: #80919c;
 }
 .wrapper > * {
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 .title {
   padding: 30px 0 10px;
