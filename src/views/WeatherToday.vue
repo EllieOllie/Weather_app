@@ -26,7 +26,7 @@
       </div>
       <div class="weather-content">
         <p v-if="errorWeatherInfo === true" class="no-info">
-          Weather information...
+          No weather information...
         </p>
         <div v-if="errorWeatherInfo === false" class="info">
           <div class="location-info">
@@ -92,7 +92,7 @@ export default {
         windSpeed: "",
         humidity: "",
         overcast: "",
-        icon: "Clouds.svg",
+        icon: null,
       },
     };
   },

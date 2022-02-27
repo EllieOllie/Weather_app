@@ -2,26 +2,68 @@
   <div class="wrapper">
     <h2 class="title">Collection of photos</h2>
     <p class="subtitle">Let's go to find any photo</p>
-    <PhotoSearchForm :getPhotosCollection="getPhotosCollection" />
+    <div class="wrap-form">
+      <form class="search" @submit.prevent="checkForm">
+        <div class="search-container">
+          <input
+            type="text"
+            placeholder="Enter..."
+            autofocus
+            v-model="inputQuery"
+          />
+          <button class="search-btn" @click="getPhotosCollection">
+            <img src="../assets/find.svg" alt="search" />
+          </button>
+        </div>
+        <p class="error" v-if="errorInputEmpty">Value should not be empty!</p>
+      </form>
+    </div>
+    <p v-if="loader">Loading...</p>
     <div class="container">
-      <Photo :photo="photo" />
+      <RandomPhoto :photo="photo" />
+      <ul>
+        <!-- <CollectionOfPhotos
+          v-for="item in collection"
+          :key="item.id"
+          :item="item"
+        /> -->
+        <li class="photo-container" v-for="item in collection" :key="item.id">
+          <div class="photo">
+            <a :href="item.links.html" target="_blank">
+              <img :src="item.cover_photo.urls.regular" alt="item.title" />
+            </a>
+          </div>
+          <p class="title">{{ item.cover_photo.alt_description }}</p>
+          <p class="subtitle">
+            <span>by</span>
+            <a :href="item.profile_image.medium" target="_blank">
+              {{ item.user.name }}
+            </a>
+            <span>on</span>
+            <a href="https://unsplash.com/" target="_blank">Unsplash</a>
+          </p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-import PhotoSearchForm from "@/components/PhotoSearchForm";
-import Photo from "@/components/Photo";
+import RandomPhoto from "@/components/RandomPhoto";
+// import CollectionOfPhotos from "@/components/CollectionOfPhotos";
 
 export default {
   components: {
-    PhotoSearchForm,
-    Photo,
+    RandomPhoto,
+    // CollectionOfPhotos,
   },
   data() {
     return {
+      errorInputEmpty: false,
+      inputQuery: "",
+      loader: false,
       photo: {},
-      photos: [],
+      collection: [],
       unsplashBaseUrl: "https://api.unsplash.com/",
       unsplashAccessKey: "pSBNMKu-4dNX_ePbWQ_XhiLhikczjUqOTCABxOCDkmE",
     };
@@ -30,27 +72,44 @@ export default {
     this.getRandomPhoto();
   },
   methods: {
+    getQuery() {
+      console.log(this.inputQuery);
+      this.inputQuery = "";
+    },
+    checkForm() {
+      if (this.inputQuery.length !== 0) {
+        return true;
+      }
+      this.errorInputEmpty = false;
+      if (this.inputQuery.length === 0) {
+        this.errorInputEmpty = true;
+      }
+    },
     getRandomPhoto() {
+      this.loader = true;
+
       this.axios
         .get(
           `${this.unsplashBaseUrl}photos/random/?client_id=${this.unsplashAccessKey}`
         )
         .then((response) => {
           this.photo = response.data;
-          // console.log(response.data);
+          console.log(response.data);
         });
+      this.loader = false;
     },
-  },
-  getPhotosCollection() {
-    this.axios
-      .get(
-        `${this.unsplashBaseUrl}search/collections/?client_id=${this.unsplashAccessKey}&query=${this.inputQuery}`
-      )
-      .then((response) => {
-        this.photos = response.data;
-        console.log(response.data);
-      });
-    this.inputQuery = "";
+    getPhotosCollection() {
+      this.axios
+        .get(
+          `${this.unsplashBaseUrl}search/collections/?client_id=${this.unsplashAccessKey}&query=${this.inputQuery}`
+        )
+        .then((response) => {
+          this.collection = response.data.results;
+          console.log(response.data.results);
+        });
+      this.loader = false;
+      this.inputQuery = "";
+    },
   },
 };
 </script>
@@ -82,6 +141,66 @@ export default {
 }
 .subtitle {
   font-weight: normal;
+}
+.search {
+  display: flex;
+  flex-direction: column;
+}
+.search-container {
+  display: flex;
+  gap: 15px;
+}
+input {
+  height: 40px;
+  padding-left: 15px;
+  border: 2px solid #071d2c;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+}
+input:focus {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+input::-webkit-input-placeholder {
+  font-family: Raleway;
+  color: #000;
+}
+input::-webkit-input-placeholder {
+  opacity: 1;
+  transition: opacity 0.7s ease;
+}
+input:focus::-webkit-input-placeholder {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+.search-btn {
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 2px solid #071d2c;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.search-btn:hover {
+  background-color: #ccd755;
+  transition: all 0.7s ease-in-out;
+}
+.search-btn:active {
+  border: 2px solid #ccd755;
+  transform: scale(0.95);
+  box-shadow: 2px 2px 10px #071d2c;
+  transition: all 0.7s ease-in-out;
+}
+.search-btn img {
+  width: 36px;
+  padding: 2px 4px;
+}
+.error {
+  color: red;
+  text-align: center;
+  font-size: 14px;
+  font-weight: normal;
+}
+.error ul {
+  list-style: none;
 }
 .container {
   width: 90%;

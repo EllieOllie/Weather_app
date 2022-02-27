@@ -2,18 +2,16 @@
   <div class="photo-wrapper">
     <div class="photo-container">
       <a :href="photo.links.html" target="_blank">
-        <img id="unsplashImage" :src="photo.urls.regular" />
+        <img :src="photo.urls.regular" />
       </a>
     </div>
-    <p class="title">
-      <span>
-        {{ photo.location.name }}
-      </span>
-      by
+    <p class="title">{{ photo.location.title }}</p>
+    <p class="subtitle">
+      <span>by</span>
       <a :href="photo.user.portfolio_url" target="_blank">
         {{ photo.user.name }}
       </a>
-      on
+      <span>on</span>
       <a href="https://unsplash.com/" target="_blank">Unsplash</a>
     </p>
   </div>
@@ -47,12 +45,20 @@ export default {
 .photo-container img {
   width: 100%;
   border: 4px solid #000;
+  margin-bottom: 1em;
 }
 .photo-container img:hover {
+  filter: opacity(40%);
   border: 4px solid #ccd755;
-  transition: 0.7s ease-out;
+  transition: all 0.7s ease-out;
 }
 .title {
+  text-align: center;
+  margin-bottom: 1em;
+}
+.subtitle {
+  display: flex;
+  gap: 5px;
   color: #fff;
   background: #000;
   text-align: center;
