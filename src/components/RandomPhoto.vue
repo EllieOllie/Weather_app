@@ -5,14 +5,12 @@
         <img :src="photo.urls.regular" />
       </a>
     </div>
-    <p class="title">{{ photo.location.title }}</p>
     <p class="subtitle">
       <span>by</span>
       <a :href="photo.user.portfolio_url" target="_blank">
         {{ photo.user.name }}
       </a>
-      <span>on</span>
-      <a href="https://unsplash.com/" target="_blank">Unsplash</a>
+      <span>on Unsplash</span>
     </p>
   </div>
 </template>
@@ -51,10 +49,6 @@ export default {
   filter: opacity(40%);
   border: 4px solid #ccd755;
   transition: all 0.7s ease-out;
-}
-.title {
-  text-align: center;
-  margin-bottom: 1em;
 }
 .subtitle {
   display: flex;

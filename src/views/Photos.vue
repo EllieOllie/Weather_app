@@ -11,51 +11,35 @@
             autofocus
             v-model="inputQuery"
           />
-          <button class="search-btn" @click="getPhotosCollection">
+          <button class="search-btn" type="submit" @click="getPhotosCollection">
             <img src="../assets/find.svg" alt="search" />
           </button>
         </div>
         <p class="error" v-if="errorInputEmpty">Value should not be empty!</p>
       </form>
     </div>
-    <p v-if="loader">Loading...</p>
-    <div class="container">
-      <RandomPhoto :photo="photo" />
-      <ul>
-        <!-- <CollectionOfPhotos
+    <div class="loader" v-if="loader"></div>
+    <div v-else class="container">
+      <div v-if="collection.length" class="collection">
+        <CollectionOfPhotos
           v-for="item in collection"
           :key="item.id"
           :item="item"
-        /> -->
-        <li class="photo-container" v-for="item in collection" :key="item.id">
-          <div class="photo">
-            <a :href="item.links.html" target="_blank">
-              <img :src="item.cover_photo.urls.regular" alt="item.title" />
-            </a>
-          </div>
-          <p class="title">{{ item.cover_photo.alt_description }}</p>
-          <p class="subtitle">
-            <span>by</span>
-            <a :href="item.profile_image.medium" target="_blank">
-              {{ item.user.name }}
-            </a>
-            <span>on</span>
-            <a href="https://unsplash.com/" target="_blank">Unsplash</a>
-          </p>
-        </li>
-      </ul>
+        />
+      </div>
+      <RandomPhoto v-else :photo="photo" />
     </div>
   </div>
 </template>
 
 <script>
 import RandomPhoto from "@/components/RandomPhoto";
-// import CollectionOfPhotos from "@/components/CollectionOfPhotos";
+import CollectionOfPhotos from "@/components/CollectionOfPhotos";
 
 export default {
   components: {
     RandomPhoto,
-    // CollectionOfPhotos,
+    CollectionOfPhotos,
   },
   data() {
     return {
@@ -72,10 +56,6 @@ export default {
     this.getRandomPhoto();
   },
   methods: {
-    getQuery() {
-      console.log(this.inputQuery);
-      this.inputQuery = "";
-    },
     checkForm() {
       if (this.inputQuery.length !== 0) {
         return true;
@@ -94,20 +74,21 @@ export default {
         )
         .then((response) => {
           this.photo = response.data;
-          console.log(response.data);
+          this.loader = false;
         });
-      this.loader = false;
     },
     getPhotosCollection() {
+      this.loader = true;
+
       this.axios
         .get(
-          `${this.unsplashBaseUrl}search/collections/?client_id=${this.unsplashAccessKey}&query=${this.inputQuery}`
+          `${this.unsplashBaseUrl}search/collections/?client_id=${this.unsplashAccessKey}&per_page=20&query=${this.inputQuery}`
         )
         .then((response) => {
           this.collection = response.data.results;
-          console.log(response.data.results);
+          this.loader = false;
         });
-      this.loader = false;
+
       this.inputQuery = "";
     },
   },
@@ -145,6 +126,7 @@ export default {
 .search {
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
 }
 .search-container {
   display: flex;
@@ -202,7 +184,23 @@ input:focus::-webkit-input-placeholder {
 .error ul {
   list-style: none;
 }
+.loader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: no-repeat center center url(../assets/gif/loader.gif);
+}
 .container {
   width: 90%;
+}
+.collection {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 1em;
+  justify-content: center;
+  align-items: start;
 }
 </style>
