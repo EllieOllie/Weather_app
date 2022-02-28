@@ -31,8 +31,8 @@
         <div v-if="errorWeatherInfo === false" class="info">
           <div class="location-info">
             <h2 class="city">
-              {{ weather.city }},
-              <span class="country">{{ weather.country }}</span>
+              {{ weather.name }},
+              <span class="country">{{ weather.sys.country }}</span>
             </h2>
             <span class="current-time">
               Current time: {{ weather.currentTime }}
@@ -41,16 +41,21 @@
           <div class="weather-info">
             <div class="summary">
               <div class="temperature">
-                <p class="temperature-now">{{ weather.temperature }}&deg;C</p>
+                <p class="temperature-now">
+                  {{ weather.main.temp.toFixed(1) }}&deg;C
+                </p>
                 <p class="temperature-realfeel">
-                  Realfeel: {{ weather.temperatureRealfeel }} &deg;C
+                  Realfeel: {{ weather.main.feels_like.toFixed(1) }} &deg;C
                 </p>
               </div>
               <p class="wind">
-                wind {{ weather.windDirect }}, {{ weather.windSpeed }} m/s
+                wind {{ weather.windDirect }},
+                {{ Math.round(weather.wind.speed) }} m/s
               </p>
-              <p class="humidity">humidity {{ weather.humidity }}%</p>
-              <p class="overcast">{{ weather.overcast }}</p>
+              <p class="humidity">
+                humidity {{ Math.round(weather.main.humidity) }}%
+              </p>
+              <p class="overcast">{{ weather.weather[0].description }}</p>
             </div>
             <div class="image">
               <img
@@ -83,15 +88,8 @@ export default {
       isDay: true,
       inputQuery: "",
       weather: {
-        city: "",
-        country: "",
         currentTime: "",
-        temperature: "",
-        temperatureRealfeel: "",
         windDirect: "",
-        windSpeed: "",
-        humidity: "",
-        overcast: "",
         icon: null,
       },
     };
@@ -110,8 +108,8 @@ export default {
         const data = await response.json();
         // console.log(data);
         this.inputQuery = "";
-        this.weather.city = data.name;
-        this.weather.country = data.sys.country;
+        this.weather = data;
+
         // время не точное!!!
         const getCurrTimeCity = () => {
           const currHours = data.timezone / 3600;
@@ -127,8 +125,6 @@ export default {
           }:${utcMin}`;
         };
         this.weather.currentTime = getCurrTimeCity();
-        this.weather.temperature = data.main.temp.toFixed(1);
-        this.weather.temperatureRealfeel = data.main.feels_like.toFixed(1);
         const getWindDirection = () => {
           let wind = "";
           const windDir = data.wind.deg;
@@ -155,9 +151,7 @@ export default {
           return wind;
         };
         this.weather.windDirect = getWindDirection();
-        this.weather.windSpeed = Math.round(data.wind.speed);
-        this.weather.humidity = Math.round(data.main.humidity);
-        this.weather.overcast = data.weather[0].description;
+
         const weatherIcon = data.weather[0].icon;
         if (weatherIcon.includes("n")) {
           this.isDay = false;
@@ -165,7 +159,6 @@ export default {
           this.isDay = true;
         }
         const mainWeather = data.weather[0].main;
-        // console.log(mainWeather);
         this.weather.icon = `${mainWeather}.svg`;
         if (mainWeather.includes("Clear")) {
           weatherIcon.includes("d")

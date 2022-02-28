@@ -7,7 +7,7 @@
       <b>Getting<br />your<br />location...</b>
     </span>
     <span class="local" v-if="currentLocation">
-      {{ currentLocation.address.city }}
+      {{ currentLocation }}
     </span>
   </div>
 </template>
@@ -38,11 +38,11 @@ export default {
         (pos) => {
           this.gettingLocation = false;
 
-          const latitude = pos.coords.latitude;
-          const longitude = pos.coords.longitude;
-          fetch(`${this.apiBaseUrl}&lat=${latitude}&lon=${longitude}`)
+          fetch(
+            `${this.apiBaseUrl}&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`
+          )
             .then((response) => response.json())
-            .then((data) => (this.currentLocation = data));
+            .then((data) => (this.currentLocation = data.address.city));
         },
         (err) => {
           this.gettingLocation = false;
