@@ -1,26 +1,24 @@
 <template>
-  <div class="wrapper">
+  <div class="photos">
     <h2 class="title">Collection of photos</h2>
-    <p class="subtitle">Let's go to find any photo</p>
-    <div class="wrap-form">
-      <form class="search" @submit.prevent="checkForm">
-        <div class="search-container">
-          <input
-            type="text"
-            placeholder="Enter..."
-            autofocus
-            v-model="inputQuery"
-          />
-          <button class="search-btn" type="submit" @click="getPhotosCollection">
-            <img src="../assets/find.svg" alt="search" />
-          </button>
-        </div>
+    <p class="subtitle">Let's to find any photo</p>
+    <form class="search-form" @submit.prevent="checkForm">
+      <div class="search__input">
+        <input
+          type="text"
+          placeholder="Enter..."
+          autofocus
+          v-model.trim="inputQuery"
+        />
         <p class="error" v-if="errorInputEmpty">Value should not be empty!</p>
-      </form>
-    </div>
+      </div>
+      <button class="search__btn" type="submit" @click="getPhotosCollection">
+        <img src="../assets/find.svg" alt="search" />
+      </button>
+    </form>
     <div class="loader" v-if="loader"></div>
-    <div v-else class="container">
-      <div v-if="collection.length" class="collection">
+    <div v-else class="photo-wrapper">
+      <div class="collection" v-if="collection.length">
         <CollectionOfPhotos
           v-for="item in collection"
           :key="item.id"
@@ -57,13 +55,9 @@ export default {
   },
   methods: {
     checkForm() {
-      if (this.inputQuery.length !== 0) {
-        return true;
-      }
-      this.errorInputEmpty = false;
-      if (this.inputQuery.length === 0) {
-        this.errorInputEmpty = true;
-      }
+      this.inputQuery.length === 0
+        ? (this.errorInputEmpty = true)
+        : (this.errorInputEmpty = false);
     },
     getRandomPhoto() {
       this.loader = true;
@@ -96,46 +90,41 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
+.photos {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   width: 90%;
   margin: 0 auto;
   padding: 20px 0;
-  color: #000;
-  background-color: #80919c;
-}
-.wrapper > * {
-  margin-bottom: 1rem;
+  background-color: #747679;
 }
 .title {
   padding: 30px 0 10px;
   color: #ccd755;
   text-align: center;
   word-wrap: break-word;
-  font-family: Calistoga;
-  font-size: 46px;
-  line-height: 40px;
+  font: 46px/40px Calistoga;
   text-shadow: 2px 2px 10px rgb(100, 100, 100);
 }
 .subtitle {
   font-weight: normal;
 }
-.search {
+.search-form {
   display: flex;
-  flex-direction: column;
+  gap: 10px;
   margin-bottom: 10px;
 }
-.search-container {
+.search__input {
   display: flex;
-  gap: 15px;
+  flex-direction: column;
 }
 input {
   height: 40px;
   padding-left: 15px;
-  border: 2px solid #071d2c;
+  border: 2px solid #ccd755;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.5);
   font-size: 18px;
@@ -145,7 +134,6 @@ input:focus {
 }
 input::-webkit-input-placeholder {
   font-family: Raleway;
-  color: #000;
 }
 input::-webkit-input-placeholder {
   opacity: 1;
@@ -155,34 +143,31 @@ input:focus::-webkit-input-placeholder {
   opacity: 0;
   transition: opacity 0.7s ease;
 }
-.search-btn {
+.search__btn {
+  height: 40px;
   background-color: rgba(255, 255, 255, 0.5);
-  border: 2px solid #071d2c;
+  border: 2px solid #0e1011;
   border-radius: 8px;
   cursor: pointer;
 }
-.search-btn:hover {
+.search__btn:hover {
   background-color: #ccd755;
   transition: all 0.7s ease-in-out;
 }
-.search-btn:active {
+.search__btn:active {
   border: 2px solid #ccd755;
   transform: scale(0.95);
-  box-shadow: 2px 2px 10px #071d2c;
+  box-shadow: 2px 2px 10px #0e1011;
   transition: all 0.7s ease-in-out;
 }
-.search-btn img {
+.search__btn img {
   width: 36px;
   padding: 2px 4px;
 }
 .error {
-  color: red;
+  color: #0e1011;
   text-align: center;
   font-size: 14px;
-  font-weight: normal;
-}
-.error ul {
-  list-style: none;
 }
 .loader {
   position: fixed;
@@ -193,7 +178,7 @@ input:focus::-webkit-input-placeholder {
   height: 100%;
   background: no-repeat center center url(../assets/gif/loader.gif);
 }
-.container {
+.photo-wrapper {
   width: 90%;
 }
 .collection {

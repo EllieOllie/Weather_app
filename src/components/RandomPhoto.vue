@@ -1,14 +1,14 @@
 <template>
-  <div class="photo-wrapper">
-    <div class="photo-container">
+  <div class="photo-container">
+    <div>
       <a :href="photo.links.html" target="_blank">
-        <img :src="photo.urls.regular" />
+        <img class="random-photo" :src="photo.urls.regular" width="500" />
       </a>
     </div>
-    <p class="subtitle">
+    <p class="caption">
       <span>by</span>
       <a :href="photo.user.portfolio_url" target="_blank">
-        {{ photo.user.name }}
+        <b>{{ photo.user.name }}</b>
       </a>
       <span>on Unsplash</span>
     </p>
@@ -27,38 +27,12 @@ export default {
 </script>
 
 <style scoped>
-.photo-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto 15px;
-}
 .photo-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-.photo-container img {
-  width: 100%;
-  border: 4px solid #000;
-  margin-bottom: 1em;
-}
-.photo-container img:hover {
-  filter: opacity(40%);
-  border: 4px solid #ccd755;
-  transition: all 0.7s ease-out;
-}
-.subtitle {
-  display: flex;
-  gap: 5px;
-  color: #fff;
-  background: #000;
-  text-align: center;
-  font-size: 14px;
-  font-weight: normal;
-  letter-spacing: 1.1px;
+  margin: 0 auto 15px;
 }
 a {
   text-decoration: none;
@@ -69,5 +43,23 @@ a:hover {
   color: #ccd755;
   font-weight: bold;
   transition: all 0.7s ease-out;
+}
+.random-photo {
+  border: 4px solid #0e1011;
+}
+.random-photo:hover {
+  filter: opacity(40%);
+  border: 4px solid #ccd755;
+  transition: all 0.7s ease-out;
+}
+.caption {
+  display: flex;
+  gap: 5px;
+  color: #fff;
+  background: #0e1011;
+  text-align: center;
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: 1.1px;
 }
 </style>

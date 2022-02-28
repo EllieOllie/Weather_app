@@ -1,21 +1,23 @@
 <template>
   <div class="photo-container">
-    <a class="photo" :href="item.cover_photo.links.html" target="_blank">
+    <a :href="item.cover_photo.links.html" target="_blank">
       <img
+        class="photo"
         :src="item.cover_photo.urls.regular"
         width="250"
         alt="item.title"
-        :title="
-          item.cover_photo.alt_description + ', ' + item.cover_photo.description
-        "
+        :title="item.cover_photo.alt_description"
       />
     </a>
-    <p class="subtitle">
+    <p class="caption">
       <span>by</span>
       <a :href="item.user.links.portfolio" target="_blank">
-        <span>{{ item.user.name }}</span>
+        <span
+          ><b>{{ item.user.name }}</b>
+        </span>
       </a>
-      <span>on Unsplash</span>
+      <span>on</span>
+      <span>Unsplash</span>
     </p>
   </div>
 </template>
@@ -39,30 +41,6 @@ export default {
   gap: 15px;
   list-style-type: none;
 }
-.photo {
-  display: flex;
-  justify-content: center;
-}
-.photo img {
-  height: 250px;
-  object-fit: cover;
-}
-.photo img:hover {
-  opacity: 60%;
-}
-.subtitle {
-  width: 250px;
-  color: #fff;
-  background: #000;
-  text-align: center;
-  font-size: 14px;
-  font-weight: normal;
-  letter-spacing: 1.1px;
-  word-break: break-word;
-}
-.subtitle > *:not(:first-child) {
-  padding-left: 5px;
-}
 a {
   text-decoration: none;
   color: #fff;
@@ -72,5 +50,27 @@ a:hover {
   color: #ccd755;
   font-weight: bold;
   transition: all 0.7s ease-out;
+}
+.photo {
+  display: flex;
+  justify-content: center;
+  height: 250px;
+  object-fit: cover;
+}
+.photo:hover {
+  opacity: 60%;
+}
+.caption {
+  width: 250px;
+  color: #fff;
+  background: #0e1011;
+  text-align: center;
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: 1.1px;
+  word-break: break-word;
+}
+.caption > *:not(:first-child) {
+  padding-left: 5px;
 }
 </style>
