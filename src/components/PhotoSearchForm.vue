@@ -32,7 +32,7 @@ export default {
         : (this.errorInput = false);
     },
     setQuery() {
-      this.$emit("getPhotosCollection", this.inputQuery, this.errorInput);
+      this.$emit("getPhotosCollection", this.inputQuery);
       this.inputQuery = "";
     },
   },
