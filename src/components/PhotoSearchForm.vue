@@ -1,60 +1,81 @@
 <template>
-  <div class="wrap-form">
-    <form class="search">
-      <input type="text" placeholder="Enter..." />
-      <button class="search-btn">
-        <img src="../assets/find.svg" alt="search" />
-      </button>
-    </form>
-  </div>
+  <form class="search-form" @submit.prevent="checkForm">
+    <div class="search__input">
+      <input
+        type="text"
+        placeholder="Enter..."
+        autofocus
+        v-model.trim="inputQuery"
+      />
+      <p class="error" v-if="errorInput">
+        Value should not be empty!<br />Please, enter only words.
+      </p>
+    </div>
+    <button class="search__btn" type="submit" @click="setQuery">
+      <img src="../assets/find.svg" alt="search" />
+    </button>
+  </form>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      inputQuery: "",
+      errorInput: false,
+    };
+  },
+  methods: {
+    checkForm() {
+      !this.inputQuery.length
+        ? (this.errorInput = true)
+        : (this.errorInput = false);
+    },
+    setQuery() {
+      this.$emit("getPhotosCollection", this.inputQuery);
+      this.inputQuery = "";
+    },
+  },
+};
+</script>
+
 <style scoped>
-.search {
+.search-form {
   display: flex;
-  gap: 15px;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.search__input {
+  display: flex;
+  flex-direction: column;
 }
 input {
+  border-color: #ccd755;
+}
+.search__btn {
   height: 40px;
-  padding-left: 15px;
-  border: 2px solid #071d2c;
-  border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.5);
-  font-size: 18px;
-}
-input:focus {
-  background-color: rgba(255, 255, 255, 0.9);
-}
-input::-webkit-input-placeholder {
-  font-family: Raleway;
-  color: #000;
-}
-input::-webkit-input-placeholder {
-  opacity: 1;
-  transition: opacity 0.7s ease;
-}
-input:focus::-webkit-input-placeholder {
-  opacity: 0;
-  transition: opacity 0.7s ease;
-}
-.search-btn {
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 2px solid #071d2c;
+  border: 2px solid #0e1011;
   border-radius: 8px;
   cursor: pointer;
 }
-.search-btn:hover {
+.search__btn:hover {
   background-color: #ccd755;
   transition: all 0.7s ease-in-out;
 }
-.search-btn:active {
+.search__btn:active {
   border: 2px solid #ccd755;
   transform: scale(0.95);
-  box-shadow: 2px 2px 10px #071d2c;
+  box-shadow: 2px 2px 10px #0e1011;
   transition: all 0.7s ease-in-out;
 }
-.search-btn img {
+.search__btn img {
   width: 36px;
   padding: 2px 4px;
+}
+.error {
+  color: #0e1011;
+  text-align: center;
+  font-size: 14px;
 }
 </style>
