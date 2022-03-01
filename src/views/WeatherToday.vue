@@ -1,5 +1,5 @@
 <template>
-  <div id="wrapper" :class="isDay ? 'day' : 'night'" v-cloak>
+  <div class="wrapper" :class="isDay ? 'day' : 'night'" v-cloak>
     <WeatherHeader />
     <main class="weather">
       <div class="container-weather">
@@ -180,13 +180,13 @@ export default {
 [v-cloak] {
   display: none;
 }
-#wrapper {
+.wrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   flex: 1 1 auto;
 }
-#wrapper > * {
+.wrapper > * {
   width: 90%;
   margin: 0 auto 25px;
 }

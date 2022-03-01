@@ -2,20 +2,7 @@
   <div class="photos">
     <h2 class="title">Collection of photos</h2>
     <p class="subtitle">Let's to find any photo</p>
-    <form class="search-form" @submit.prevent="checkForm">
-      <div class="search__input">
-        <input
-          type="text"
-          placeholder="Enter..."
-          autofocus
-          v-model.trim="inputQuery"
-        />
-        <p class="error" v-if="errorInputEmpty">Value should not be empty!</p>
-      </div>
-      <button class="search__btn" type="submit" @click="getPhotosCollection">
-        <img src="../assets/find.svg" alt="search" />
-      </button>
-    </form>
+    <PhotoSearchForm @getPhotosCollection="getPhotosCollection" />
     <div class="loader" v-if="loader"></div>
     <div v-else class="photo-wrapper">
       <div class="collection" v-if="collection.length">
@@ -31,17 +18,18 @@
 </template>
 
 <script>
+import PhotoSearchForm from "@/components/PhotoSearchForm";
 import RandomPhoto from "@/components/RandomPhoto";
 import CollectionOfPhotos from "@/components/CollectionOfPhotos";
 
 export default {
   components: {
+    PhotoSearchForm,
     RandomPhoto,
     CollectionOfPhotos,
   },
   data() {
     return {
-      errorInputEmpty: false,
       inputQuery: "",
       loader: false,
       photo: {},
@@ -54,11 +42,6 @@ export default {
     this.getRandomPhoto();
   },
   methods: {
-    checkForm() {
-      this.inputQuery.length === 0
-        ? (this.errorInputEmpty = true)
-        : (this.errorInputEmpty = false);
-    },
     getRandomPhoto() {
       this.loader = true;
 
@@ -71,7 +54,8 @@ export default {
           this.loader = false;
         });
     },
-    getPhotosCollection() {
+    getPhotosCollection(data) {
+      this.inputQuery = data;
       this.loader = true;
 
       this.axios
@@ -82,8 +66,6 @@ export default {
           this.collection = response.data.results;
           this.loader = false;
         });
-
-      this.inputQuery = "";
     },
   },
 };
@@ -111,44 +93,6 @@ export default {
 }
 .subtitle {
   font-weight: normal;
-}
-.search-form {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.search__input {
-  display: flex;
-  flex-direction: column;
-}
-input {
-  border-color: #ccd755;
-}
-.search__btn {
-  height: 40px;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 2px solid #0e1011;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.search__btn:hover {
-  background-color: #ccd755;
-  transition: all 0.7s ease-in-out;
-}
-.search__btn:active {
-  border: 2px solid #ccd755;
-  transform: scale(0.95);
-  box-shadow: 2px 2px 10px #0e1011;
-  transition: all 0.7s ease-in-out;
-}
-.search__btn img {
-  width: 36px;
-  padding: 2px 4px;
-}
-.error {
-  color: #0e1011;
-  text-align: center;
-  font-size: 14px;
 }
 .loader {
   position: fixed;
