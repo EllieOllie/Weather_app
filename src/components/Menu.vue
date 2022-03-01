@@ -55,6 +55,6 @@
 .link.router-link-exact-active {
   color: #0e1011;
   background: #fff;
-  box-shadow: 2px 2px 10px darkgray;
+  box-shadow: 2px -4px 10px darkgray;
 }
 </style>

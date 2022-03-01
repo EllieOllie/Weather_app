@@ -2,34 +2,16 @@
   <div class="wrapper" :class="isDay ? 'day' : 'night'" v-cloak>
     <WeatherHeader @getlocalWeather="getlocalWeather" />
     <main class="weather">
-      <div class="container-weather">
+      <div>
         <h2 class="title">Weather Today</h2>
-        <div class="search-form">
-          <form class="get-location" @submit.prevent="getWeather">
-            <input
-              type="text"
-              placeholder="Enter a city..."
-              autofocus
-              autocomplete="on"
-              v-model="inputQuery"
-            />
-          </form>
-          <button
-            class="search-btn"
-            v-if="inputQuery !== ''"
-            @click.prevent="getWeather"
-          >
-            <img src="../assets/find-location.svg" alt="search" />
-          </button>
-        </div>
-        <p class="error" v-if="errorCityFound">City not found!</p>
+        <WeatherSearchForm @getWeather="getWeather" />
       </div>
       <div class="weather-content">
         <p v-if="errorWeatherInfo === true" class="no-info">
-          Weather information...
+          No weather information...
         </p>
-        <div v-if="errorWeatherInfo === false" class="info">
-          <div class="location-info">
+        <div class="info" v-if="errorWeatherInfo === false">
+          <div>
             <h2 class="city">
               {{ weather.name }},
               <span class="country">{{ weather.sys.country }}</span>
@@ -39,12 +21,12 @@
             </span>
           </div>
           <div class="weather-info">
-            <div class="summary">
+            <div class="weather-info__summary">
               <div class="temperature">
-                <p class="temperature-now">
+                <p class="temperature__now">
                   {{ weather.main.temp.toFixed(1) }}&deg;C
                 </p>
-                <p class="temperature-realfeel">
+                <p class="temperature__realfeel">
                   Realfeel: {{ weather.main.feels_like.toFixed(1) }} &deg;C
                 </p>
               </div>
@@ -57,7 +39,7 @@
               </p>
               <p class="overcast">{{ weather.weather[0].description }}</p>
             </div>
-            <div class="image">
+            <div class="weather-info__icon">
               <img
                 :src="require('../assets/weather/' + weather.icon)"
                 alt="weather"
@@ -72,10 +54,12 @@
 </template>
 
 <script>
+import WeatherSearchForm from "@/components/WeatherSearchForm";
 import WeatherHeader from "@/components/WeatherHeader";
 import WeatherFooter from "@/components/WeatherFooter";
 export default {
   components: {
+    WeatherSearchForm,
     WeatherHeader,
     WeatherFooter,
   },
@@ -83,7 +67,6 @@ export default {
     return {
       keyWeather: "36e0d61c301b666cc148f1050b14aab6",
       apiBaseURL: "http://api.openweathermap.org/data/2.5/",
-      errorCityFound: false,
       errorWeatherInfo: true,
       isDay: true,
       inputQuery: "",
@@ -168,15 +151,14 @@ export default {
         this.errorWeatherInfo = true;
       }
     },
-    getWeather: async function () {
-      this.errorWeatherInfo = true;
+    getWeather: async function (query) {
+      this.imputQuery = query;
       try {
         const response = await fetch(
-          `${this.apiBaseURL}weather?q=${this.inputQuery}&appid=${this.keyWeather}&units=metric`
+          `${this.apiBaseURL}weather?q=${query}&appid=${this.keyWeather}&units=metric`
         );
         const data = await response.json();
         // console.log(data);
-        this.inputQuery = "";
         this.weather = data;
 
         // время не точное!!!
@@ -281,11 +263,6 @@ export default {
   gap: 25px;
   flex: 1 1 auto;
 }
-.container-weather {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 .title {
   margin-bottom: 1rem;
   color: #ffa400;
@@ -297,39 +274,6 @@ export default {
   line-height: 50px;
   text-shadow: 2px 2px 10px #747679;
 }
-.search-form {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 10px;
-}
-input {
-  border-color: #071d2c;
-}
-.search-btn {
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 2px solid #071d2c;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.search-btn:hover {
-  background-color: #ffa400;
-  transition: all 0.7s ease-in-out;
-}
-.search-btn:active {
-  border: 2px solid #ffa400;
-  transform: scale(0.95);
-  box-shadow: 2px 2px 10px #071d2c;
-  transition: all 0.7s ease-in-out;
-}
-.search-btn img {
-  width: 36px;
-  padding: 2px 4px;
-}
-.error {
-  margin-bottom: 5px;
-  font-size: 16px;
-}
 .weather-content {
   min-height: 300px;
   width: 450px;
@@ -339,7 +283,7 @@ input {
   padding: 20px 40px;
   border-radius: 10px;
   box-shadow: inset 0 0 20px 10px #91a0b4;
-  background: rgba(221, 220, 220, 0.55);
+  background: rgba(221, 220, 220, 0.3);
 }
 .no-info {
   display: flex;
@@ -353,22 +297,22 @@ input {
   display: flex;
   justify-content: space-between;
 }
-.summary {
+.weather-info__summary {
   display: flex;
   flex-direction: column;
 }
-.temperature-now {
+.temperature__now {
   color: #77c2e9;
   font-size: 56px;
   text-shadow: -3px 3px 6px #000;
 }
-.temperature-realfeel {
+.temperature__realfeel {
   font-size: 14px;
 }
-.image {
+.weather-info__icon {
   position: relative;
 }
-.image img {
+.weather-info__icon img {
   position: absolute;
   top: -60px;
   right: -35px;
