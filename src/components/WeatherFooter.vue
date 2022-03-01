@@ -1,15 +1,16 @@
 <template>
-  <footer class="nasa-info">
+  <footer class="nasa">
     <div class="nasa-icon" :title="message">
       NASA Today
-      <img src="../assets/nasa.svg" alt="nasa-logo" />
+      <img src="../assets/nasa.svg" width="35" alt="nasa-logo" />
     </div>
-    <div class="nasa">
-      <a class="nasa-link" target="_blank" :href="nasa.hdurl">
-        <img class="nasa-img" :src="nasa.url" alt="nasa" />
+    <p v-if="errorMsg" class="nasa-error">Ooops... something went wrong</p>
+    <div v-else class="nasa-info">
+      <a class="nasa-info__img" target="_blank" :href="nasa.hdurl">
+        <img :src="nasa.url" width="200" height="200" alt="nasa" />
       </a>
-      <h3 class="nasa-title">{{ nasa.title }}</h3>
-      <p class="nasa-description">{{ nasa.explanation }}</p>
+      <h3>{{ nasa.title }}</h3>
+      <p>{{ nasa.explanation }}</p>
     </div>
   </footer>
 </template>
@@ -23,6 +24,7 @@ export default {
         "Image of the day from NASA (" +
         new Date().toLocaleString().slice(0, 10) +
         ")",
+      errorMsg: false,
       keyNasa: "NscA0buKrklyeIAikyUvalzPLnTqlQvJVssJIUgM",
       nasaBaseURL: "https://api.nasa.gov/planetary/",
     };
@@ -32,26 +34,29 @@ export default {
   },
   methods: {
     fetchNasaInfo() {
-      this.axios
-        .get(`${this.nasaBaseURL}apod?api_key=${this.keyNasa}`)
-        .then((response) => {
-          this.nasa = response.data;
-          // console.log(response.data);
-        });
+      try {
+        this.axios
+          .get(`${this.nasaBaseURL}apod?api_key=${this.keyNasa}`)
+          .then((response) => {
+            this.nasa = response.data;
+            this.errorMsg = false;
+          });
+      } catch (error) {
+        this.errorMsg = true;
+      }
     },
   },
 };
 </script>
 
 <style scoped>
-.nasa-info {
+.nasa {
   position: relative;
   padding: 25px 10px;
   background: rgba(47, 54, 78, 0.8);
   border: 2px solid #ffa400;
   border-radius: 4px;
 }
-
 .nasa-icon {
   position: absolute;
   top: -25px;
@@ -66,22 +71,18 @@ export default {
   border-radius: 5px;
   font: bold 22px Raleway, sans-serif;
 }
-
-.nasa-icon img {
-  width: 35px;
+.nasa-error {
+  color: #fff;
+  letter-spacing: 1.2px;
 }
-
-.nasa {
+.nasa-info {
   color: #fff;
   font-size: 16px;
   font-weight: normal;
   text-shadow: none;
 }
-
-.nasa-img {
+.nasa-info__img {
   float: left;
-  width: 200px;
-  height: 200px;
   margin: 0 20px 5px 0;
 }
 </style>

@@ -16,10 +16,12 @@
 export default {
   data() {
     return {
-      apiBaseUrl: "https://nominatim.openstreetmap.org/reverse?format=jsonv2",
       currentLocation: "",
       gettingLocation: false,
       errorStr: "",
+      apiIP:
+        "https://geo.ipify.org/api/v2/country,city,vpn?apiKey=at_NK47fkgNYSRDGpT9n9CZcFkKnMdrB",
+      userTimeZone: "",
     };
   },
   mounted() {
@@ -27,28 +29,18 @@ export default {
   },
   methods: {
     getUserLoc() {
-      //do we support geolocation
-      if (!("geolocation" in navigator)) {
-        this.errorStr = "Geolocation is not available!";
-        return;
-      }
       this.gettingLocation = true;
-      // get position
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          this.gettingLocation = false;
 
-          fetch(
-            `${this.apiBaseUrl}&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`
-          )
-            .then((response) => response.json())
-            .then((data) => (this.currentLocation = data.address.city));
-        },
-        (err) => {
+      try {
+        this.axios.get(this.apiIP).then((response) => {
+          this.currentLocation = response.data.location.city;
+          this.userTimeZone = response.data.location.timezone.slice(0, 3);
           this.gettingLocation = false;
-          this.errorStr = err.message;
-        }
-      );
+        });
+      } catch (error) {
+        this.gettingLocation = false;
+        this.errorStr = error.message;
+      }
     },
   },
 };
