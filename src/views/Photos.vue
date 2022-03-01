@@ -81,7 +81,7 @@ export default {
   width: 90%;
   margin: 0 auto;
   padding: 20px 0;
-  background-color: #939494;
+  background-color: #c5c0bb;
 }
 .title {
   padding: 0 0 10px;

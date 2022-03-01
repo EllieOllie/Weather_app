@@ -24,7 +24,7 @@ body {
 }
 body {
   color: #fff;
-  background: #939494;
+  background: #c5c0bb;
   font-family: Raleway, Verdana, sans-serif;
   font-size: 18px;
   font-weight: 600;

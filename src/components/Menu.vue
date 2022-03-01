@@ -16,9 +16,7 @@
   width: 50%;
   padding: 25px 0;
   position: relative;
-  color: #fff;
-  cursor: pointer;
-  text-decoration: none;
+  text-shadow: 2px 2px 10px darkgray;
   transition: 1s;
 }
 .link:before,
@@ -48,9 +46,15 @@
 }
 .link:hover {
   color: #0e1011;
+  text-shadow: none;
 }
 .link:active {
   transform: scale(0.95);
   transition: all 1s ease-in-out;
+}
+.link.router-link-exact-active {
+  color: #0e1011;
+  background: #fff;
+  box-shadow: 2px 2px 10px darkgray;
 }
 </style>
