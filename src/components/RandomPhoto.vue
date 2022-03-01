@@ -2,7 +2,7 @@
   <div class="photo-container">
     <div>
       <a :href="photo.links.html" target="_blank">
-        <img class="random-photo" :src="photo.urls.regular" width="500" />
+        <img class="random-photo" :src="photo.urls.regular" width="450" />
       </a>
     </div>
     <p class="caption">
@@ -34,11 +34,6 @@ export default {
   align-items: center;
   margin: 0 auto 15px;
 }
-a {
-  text-decoration: none;
-  color: #fff;
-  cursor: pointer;
-}
 a:hover {
   color: #ccd755;
   font-weight: bold;
@@ -55,11 +50,15 @@ a:hover {
 .caption {
   display: flex;
   gap: 5px;
-  color: #fff;
   background: #0e1011;
   text-align: center;
   font-size: 14px;
   font-weight: normal;
   letter-spacing: 1.1px;
+}
+@media (max-width: 450px) {
+  .random-photo {
+    width: 100%;
+  }
 }
 </style>

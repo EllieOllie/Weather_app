@@ -194,7 +194,7 @@ export default {
   color: #071d2c;
   text-shadow: 2px 2px 10px #ccc;
   background: no-repeat 0 0 / cover
-      radial-gradient(rgba(198, 222, 255, 0.2) 10%, rgba(21, 58, 84, 0.6) 85%),
+      radial-gradient(rgba(77, 77, 77, 0.2) 10%, rgba(60, 68, 75, 0.6) 85%),
     no-repeat 2% 25% / cover url(../assets/Cold-day.svg);
 }
 .night {
@@ -226,7 +226,7 @@ export default {
   font-size: 50px;
   letter-spacing: 1.5px;
   line-height: 50px;
-  text-shadow: 2px 2px 10px #2e3636;
+  text-shadow: 2px 2px 10px #747679;
 }
 .search-form {
   display: flex;
@@ -235,27 +235,7 @@ export default {
   margin-bottom: 10px;
 }
 input {
-  height: 40px;
-  padding-left: 15px;
-  border: 2px solid #071d2c;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.5);
-  font-size: 18px;
-}
-input:focus {
-  background-color: rgba(255, 255, 255, 0.9);
-}
-input::-webkit-input-placeholder {
-  font-family: Raleway;
-  color: #153a54;
-}
-input::-webkit-input-placeholder {
-  opacity: 1;
-  transition: opacity 0.7s ease;
-}
-input:focus::-webkit-input-placeholder {
-  opacity: 0;
-  transition: opacity 0.7s ease;
+  border-color: #071d2c;
 }
 .search-btn {
   background-color: rgba(255, 255, 255, 0.5);

@@ -41,11 +41,6 @@ export default {
   gap: 15px;
   list-style-type: none;
 }
-a {
-  text-decoration: none;
-  color: #fff;
-  cursor: pointer;
-}
 a:hover {
   color: #ccd755;
   font-weight: bold;
@@ -62,7 +57,6 @@ a:hover {
 }
 .caption {
   width: 250px;
-  color: #fff;
   background: #0e1011;
   text-align: center;
   font-size: 14px;

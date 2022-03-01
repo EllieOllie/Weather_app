@@ -99,10 +99,10 @@ export default {
   width: 90%;
   margin: 0 auto;
   padding: 20px 0;
-  background-color: #747679;
+  background-color: #939494;
 }
 .title {
-  padding: 30px 0 10px;
+  padding: 0 0 10px;
   color: #ccd755;
   text-align: center;
   word-wrap: break-word;
@@ -122,26 +122,7 @@ export default {
   flex-direction: column;
 }
 input {
-  height: 40px;
-  padding-left: 15px;
-  border: 2px solid #ccd755;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.5);
-  font-size: 18px;
-}
-input:focus {
-  background-color: rgba(255, 255, 255, 0.9);
-}
-input::-webkit-input-placeholder {
-  font-family: Raleway;
-}
-input::-webkit-input-placeholder {
-  opacity: 1;
-  transition: opacity 0.7s ease;
-}
-input:focus::-webkit-input-placeholder {
-  opacity: 0;
-  transition: opacity 0.7s ease;
+  border-color: #ccd755;
 }
 .search__btn {
   height: 40px;

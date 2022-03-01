@@ -47,11 +47,10 @@
   transform: rotateY(0deg);
 }
 .link:hover {
-  color: #153a54;
+  color: #0e1011;
 }
 .link:active {
   transform: scale(0.95);
-  color: #ffa400;
   transition: all 1s ease-in-out;
 }
 </style>
