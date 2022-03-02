@@ -57,4 +57,9 @@
   background: #fff;
   box-shadow: 2px -4px 10px darkgray;
 }
+@media (max-width: 500px) {
+  .link {
+    font-size: 16px;
+  }
+}
 </style>

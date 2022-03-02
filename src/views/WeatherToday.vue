@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       keyWeather: "36e0d61c301b666cc148f1050b14aab6",
-      apiBaseURL: "http://api.openweathermap.org/data/2.5/",
+      apiBaseURL: "https://api.openweathermap.org/data/2.5/",
       errorWeatherInfo: true,
       isDay: true,
       inputQuery: "",
@@ -319,11 +319,31 @@ export default {
   width: 250px;
   z-index: 10;
 }
-@media (max-width: 420px) {
-  .image img {
-    top: 5px;
-    right: -50px;
-    width: 165px;
+@media (max-width: 500px) {
+  .wrapper > * {
+    margin: 0 auto 15px;
+  }
+  .title {
+    font-size: 40px;
+  }
+  .weather-content {
+    padding: 20px 20px;
+  }
+  .city {
+    font-size: 26px;
+    padding-bottom: 0.3em;
+  }
+  .current-time,
+  .weather-info {
+    font-size: 16px;
+  }
+  .temperature__now {
+    font-size: 50px;
+  }
+  .weather-info__icon img {
+    top: -30px;
+    right: -30px;
+    width: 200px;
   }
 }
 </style>

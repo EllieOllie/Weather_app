@@ -7,10 +7,10 @@
     <p v-if="errorMsg" class="nasa-error">Ooops... something went wrong</p>
     <div v-else class="nasa-info">
       <a class="nasa-info__img" target="_blank" :href="nasa.hdurl">
-        <img :src="nasa.url" width="200" height="200" alt="nasa" />
+        <img :src="nasa.url" width="250" height="250" alt="nasa" />
       </a>
-      <h3>{{ nasa.title }}</h3>
-      <p>{{ nasa.explanation }}</p>
+      <h3 class="nasa-info__title">{{ nasa.title }}</h3>
+      <p class="nasa-info__caption">{{ nasa.explanation }}</p>
     </div>
   </footer>
 </template>
@@ -84,5 +84,21 @@ export default {
 .nasa-info__img {
   float: left;
   margin: 0 20px 5px 0;
+}
+@media (max-width: 500px) {
+  .nasa-icon {
+    padding: 6px 14px;
+    font-size: 18px;
+  }
+  .nasa-info__img {
+    display: flex;
+    justify-content: center;
+    float: none;
+    margin: 0 0 5px;
+  }
+  .nasa-info__title {
+    text-align: center;
+    padding-bottom: 10px;
+  }
 }
 </style>
