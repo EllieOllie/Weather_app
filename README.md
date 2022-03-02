@@ -1,6 +1,6 @@
 # Web-application "Start Day"
 
-deployment - ellieollie.github.io/weather_app/
+*Deployment:* https://ellieollie.github.io/Weather_app/
 
 **Adapted for mobile devices!**
 ### The app consist of 2 pages:
