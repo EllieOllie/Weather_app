@@ -77,14 +77,11 @@ export default {
       },
     };
   },
-  mounted() {
+  methods: {
     /**
-     * Получение города по ip и передача его в инпут, затем - вызов функции, обрабатывающий этот запрос, при загрузке сайта.
+     * Идея была - получение города по ip и передача его в инпут, затем - вызов функции, обрабатывающий этот запрос, при загрузке сайта.
      * Решение совсем не элегантное, это - костыль, по сути полностью дублирующая функция getWeather, но придумать, что-то более приемлемое и рабочее пока не получилось, к сожалению.
      */
-    this.getlocalWeather();
-  },
-  methods: {
     getlocalWeather: async function (loc) {
       this.inputQuery = loc;
       try {
@@ -158,11 +155,10 @@ export default {
     getWeather: async function (query) {
       this.imputQuery = query;
       try {
-        await this.axios
-          .get(
-            `${this.apiBaseURL}weather?q=${query}&appid=${this.keyWeather}&units=metric`
-          )
-          .then((response) => (this.weather = response.data));
+        const response = await fetch(
+          `${this.apiBaseURL}weather?q=${query}&appid=${this.keyWeather}&units=metric`
+        );
+        this.weather = await response.json();
 
         // время не точное!!!
         const getCurrTimeCity = () => {
