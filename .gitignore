@@ -21,7 +21,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+*.sh
 
-.gitignore
-deploy.sh
 vue.config.js
