@@ -2,7 +2,7 @@
   <footer class="nasa">
     <div class="nasa-icon" :title="message">
       NASA Today
-      <img src="../assets/nasa.svg" width="35" alt="nasa-logo" />
+      <img src="../assets/svg/nasa.svg" width="35" alt="nasa-logo" />
     </div>
     <p v-if="errorMsg" class="nasa-error">Ooops... something went wrong</p>
     <div v-else class="nasa-info">
@@ -33,9 +33,9 @@ export default {
     this.fetchNasaInfo();
   },
   methods: {
-    fetchNasaInfo() {
+    fetchNasaInfo: async function () {
       try {
-        this.axios
+        await this.axios
           .get(`${this.nasaBaseURL}apod?api_key=${this.keyNasa}`)
           .then((response) => {
             this.nasa = response.data;

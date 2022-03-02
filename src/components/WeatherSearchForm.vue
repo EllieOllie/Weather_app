@@ -15,7 +15,7 @@
         v-if="inputQuery !== ''"
         @click.prevent="getQuery"
       >
-        <img src="../assets/find-location.svg" alt="search" />
+        <img src="../assets/svg/find-location.svg" alt="search" />
       </button>
     </div>
     <p class="error" v-if="errorCityFound">City not found!</p>

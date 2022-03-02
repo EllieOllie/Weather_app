@@ -29,13 +29,23 @@ export default {
   },
   mounted() {
     this.getUserLoc();
+
+    if (localStorage.currentLocation) {
+      this.currentLocation = localStorage.currentLocation;
+      this.gettingLocation = false;
+    }
+  },
+  watch: {
+    currentLocation(newCurrentLocation) {
+      localStorage.currentLocation = newCurrentLocation;
+    },
   },
   methods: {
-    getUserLoc() {
+    getUserLoc: async function () {
       this.gettingLocation = true;
 
       try {
-        this.axios.get(this.apiIP).then((response) => {
+        await this.axios.get(this.apiIP).then((response) => {
           this.currentLocation = response.data.location.city;
           this.gettingLocation = false;
 
