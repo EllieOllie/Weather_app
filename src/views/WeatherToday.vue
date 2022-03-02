@@ -154,16 +154,15 @@ export default {
     getWeather: async function (query) {
       this.imputQuery = query;
       try {
-        const response = await fetch(
-          `${this.apiBaseURL}weather?q=${query}&appid=${this.keyWeather}&units=metric`
-        );
-        const data = await response.json();
-        // console.log(data);
-        this.weather = data;
+        await this.axios
+          .get(
+            `${this.apiBaseURL}weather?q=${query}&appid=${this.keyWeather}&units=metric`
+          )
+          .then((response) => (this.weather = response.data));
 
         // время не точное!!!
         const getCurrTimeCity = () => {
-          const currHours = data.timezone / 3600;
+          const currHours = this.weather.timezone / 3600;
           let utcHours = new Date().toUTCString().slice(17, 19);
           let utcMin = new Date().toUTCString().slice(20, 22);
           let reasultHours = +utcHours + Math.round(+currHours);
@@ -178,7 +177,7 @@ export default {
         this.weather.currentTime = getCurrTimeCity();
         const getWindDirection = () => {
           let wind = "";
-          const windDir = data.wind.deg;
+          const windDir = this.weather.wind.deg;
           if (
             (windDir >= 0 && windDir <= 10) ||
             (windDir >= 351 && windDir <= 360)
@@ -203,13 +202,13 @@ export default {
         };
         this.weather.windDirect = getWindDirection();
 
-        const weatherIcon = data.weather[0].icon;
+        const weatherIcon = this.weather.weather[0].icon;
         if (weatherIcon.includes("n")) {
           this.isDay = false;
         } else {
           this.isDay = true;
         }
-        const mainWeather = data.weather[0].main;
+        const mainWeather = this.weather.weather[0].main;
         this.weather.icon = `${mainWeather}.svg`;
         if (mainWeather.includes("Clear")) {
           weatherIcon.includes("d")
@@ -246,14 +245,14 @@ export default {
   text-shadow: 2px 2px 10px #ccc;
   background: no-repeat 0 0 / cover
       linear-gradient(rgba(100, 100, 100, 0.3) 10%, rgba(60, 68, 75, 0.6) 85%),
-    no-repeat 2% 25% / cover url(../assets/Cold-day.svg);
+    no-repeat 2% 25% / cover url(../assets/svg/Cold-day.svg);
 }
 .night {
   color: #fff;
   text-shadow: 2px 2px 10px #153a54;
   background: no-repeat 0 0 / cover
       radial-gradient(rgba(198, 222, 255, 0.2) 10%, rgba(21, 58, 84, 0.6) 85%),
-    no-repeat 2% 20% / cover url(../assets/Cold-night.svg);
+    no-repeat 2% 20% / cover url(../assets/svg/Cold-night.svg);
 }
 .weather {
   display: flex;
@@ -341,9 +340,8 @@ export default {
     font-size: 50px;
   }
   .weather-info__icon img {
-    top: -30px;
-    right: -30px;
-    width: 200px;
+    top: -25px;
+    width: 205px;
   }
 }
 </style>

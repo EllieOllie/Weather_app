@@ -12,7 +12,7 @@
       </p>
     </div>
     <button class="search__btn" type="submit" @click="setQuery">
-      <img src="../assets/find.svg" alt="search" />
+      <img src="../assets/svg/find.svg" alt="search" />
     </button>
   </form>
 </template>

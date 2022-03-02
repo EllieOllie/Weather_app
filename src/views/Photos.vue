@@ -42,10 +42,10 @@ export default {
     this.getRandomPhoto();
   },
   methods: {
-    getRandomPhoto() {
+    getRandomPhoto: async function () {
       this.loader = true;
 
-      this.axios
+      await this.axios
         .get(
           `${this.unsplashBaseUrl}photos/random/?client_id=${this.unsplashAccessKey}`
         )
@@ -54,11 +54,11 @@ export default {
           this.loader = false;
         });
     },
-    getPhotosCollection(data) {
+    getPhotosCollection: async function (data) {
       this.inputQuery = data;
       this.loader = true;
 
-      this.axios
+      await this.axios
         .get(
           `${this.unsplashBaseUrl}search/collections/?client_id=${this.unsplashAccessKey}&per_page=20&query=${this.inputQuery}`
         )
