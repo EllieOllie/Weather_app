@@ -81,7 +81,7 @@ export default {
   width: 90%;
   margin: 0 auto;
   padding: 20px 0;
-  background-color: #c5c0bb;
+  background-color: #ccc7c2;
 }
 .title {
   padding: 0 0 10px;
@@ -92,6 +92,7 @@ export default {
   text-shadow: 2px 2px 10px rgb(100, 100, 100);
 }
 .subtitle {
+  color: #0e1011;
   font-weight: normal;
 }
 .loader {

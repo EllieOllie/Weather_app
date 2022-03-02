@@ -53,7 +53,7 @@ export default {
 .nasa {
   position: relative;
   padding: 25px 10px;
-  background: rgba(47, 54, 78, 0.8);
+  background: rgba(47, 60, 78, 0.8);
   border: 2px solid #ffa400;
   border-radius: 4px;
 }
