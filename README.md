@@ -1,5 +1,7 @@
 # Web-application "Start Day"
 
+deployment - ellieollie.github.io/weather_app/
+
 **Adapted for mobile devices!**
 ### The app consist of 2 pages:
 - Main page - "Weather today" (Get realtime weather by Openweather API);
