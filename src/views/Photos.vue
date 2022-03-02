@@ -113,4 +113,9 @@ export default {
   justify-content: center;
   align-items: start;
 }
+@media (max-width: 500px) {
+  .title {
+    font-size: 35px;
+  }
+}
 </style>

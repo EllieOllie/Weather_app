@@ -80,4 +80,13 @@ export default {
 .time {
   font-size: 50px;
 }
+@media (max-width: 500px) {
+  .user-info {
+    gap: 15px;
+    font-size: 18px;
+  }
+  .time {
+    font-size: 35px;
+  }
+}
 </style>
