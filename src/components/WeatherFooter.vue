@@ -85,6 +85,11 @@ export default {
   float: left;
   margin: 0 20px 5px 0;
 }
+.nasa-info__img:hover {
+  transform: scale(0.95);
+  opacity: 60%;
+  transition: all 0.5s ease-in-out;
+}
 @media (max-width: 500px) {
   .nasa-icon {
     padding: 6px 14px;
