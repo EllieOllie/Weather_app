@@ -245,7 +245,7 @@ export default {
   color: #071d2c;
   text-shadow: 2px 2px 10px #ccc;
   background: no-repeat 0 0 / cover
-      linear-gradient(rgba(77, 77, 77, 0.3) 10%, rgba(60, 68, 75, 0.6) 85%),
+      linear-gradient(rgba(100, 100, 100, 0.3) 10%, rgba(60, 68, 75, 0.6) 85%),
     no-repeat 2% 25% / cover url(../assets/Cold-day.svg);
 }
 .night {
