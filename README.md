@@ -71,7 +71,7 @@ Web-app contains search field for collections of photos - to get any collection 
 
 
 
-
+<!-- 
 
 
 ## Project setup
@@ -96,3 +96,4 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+ -->
