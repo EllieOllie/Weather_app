@@ -9,7 +9,7 @@
         :title="item.cover_photo.alt_description"
       />
     </a>
-    <p class="caption">
+    <p class="link">
       <span>by</span>
       <a :href="item.user.links.portfolio" target="_blank">
         <span
@@ -55,7 +55,7 @@ a:hover {
 .photo:hover {
   opacity: 60%;
 }
-.caption {
+.link {
   width: 250px;
   background: #0e1011;
   text-align: center;
@@ -64,7 +64,7 @@ a:hover {
   letter-spacing: 1.1px;
   word-break: break-word;
 }
-.caption > *:not(:first-child) {
+.link > *:not(:first-child) {
   padding-left: 5px;
 }
 </style>

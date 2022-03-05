@@ -1,16 +1,21 @@
 <template>
-  <footer class="nasa">
-    <div class="nasa-icon" :title="message">
-      NASA Today
-      <img src="../assets/svg/nasa.svg" width="35" alt="nasa-logo" />
+  <footer>
+    <div class="nasa-error" v-if="errorMsg">
+      <p>Ooops... something went wrong</p>
     </div>
-    <p v-if="errorMsg" class="nasa-error">Ooops... something went wrong</p>
-    <div v-else class="nasa-info">
-      <a class="nasa-info__img" target="_blank" :href="nasa.hdurl">
-        <img :src="nasa.url" width="250" height="250" alt="nasa" />
-      </a>
-      <h3 class="nasa-info__title">{{ nasa.title }}</h3>
-      <p class="nasa-info__caption">{{ nasa.explanation }}</p>
+    <div class="nasa-loading" v-if="loading"></div>
+    <div class="nasa" v-else>
+      <div class="nasa-icon" :title="message">
+        NASA Today
+        <img src="../assets/svg/nasa.svg" width="35" alt="nasa-logo" />
+      </div>
+      <div class="nasa-info">
+        <a class="nasa-info__img" target="_blank" :href="nasa.hdurl">
+          <img :src="nasa.url" width="250" height="250" alt="nasa" />
+        </a>
+        <h3 class="nasa-info__title">{{ nasa.title }}</h3>
+        <p class="nasa-info__caption">{{ nasa.explanation }}</p>
+      </div>
     </div>
   </footer>
 </template>
@@ -25,6 +30,7 @@ export default {
         new Date().toLocaleString().slice(0, 10) +
         ")",
       errorMsg: false,
+      loading: false,
       keyNasa: "NscA0buKrklyeIAikyUvalzPLnTqlQvJVssJIUgM",
       nasaBaseURL: "https://api.nasa.gov/planetary/",
     };
@@ -34,22 +40,37 @@ export default {
   },
   methods: {
     fetchNasaInfo: async function () {
-      try {
-        await this.axios
-          .get(`${this.nasaBaseURL}apod?api_key=${this.keyNasa}`)
-          .then((response) => {
-            this.nasa = response.data;
-            this.errorMsg = false;
-          });
-      } catch (error) {
-        this.errorMsg = true;
-      }
+      this.loading = true;
+      await this.axios
+        .get(`${this.nasaBaseURL}apod?api_key=${this.keyNasa}`)
+        .then((response) => {
+          this.nasa = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errorMsg = true;
+        })
+        .finally(() => (this.loading = false));
     },
   },
 };
 </script>
 
 <style scoped>
+.nasa-error {
+  color: #fff;
+  letter-spacing: 1.2px;
+  text-align: center;
+}
+.nasa-loading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: no-repeat center center url(../assets/gif/loading.gif);
+}
 .nasa {
   position: relative;
   padding: 25px 10px;
@@ -70,10 +91,6 @@ export default {
   border: none;
   border-radius: 5px;
   font: bold 22px Raleway, sans-serif;
-}
-.nasa-error {
-  color: #fff;
-  letter-spacing: 1.2px;
 }
 .nasa-info {
   color: #fff;

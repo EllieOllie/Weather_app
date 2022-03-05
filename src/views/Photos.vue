@@ -3,8 +3,14 @@
     <h2 class="title">Collection of photos</h2>
     <p class="subtitle">Let's to find any photo</p>
     <PhotoSearchForm @getPhotosCollection="getPhotosCollection" />
+    <div v-if="errored" class="error">
+      <p>
+        We're sorry, we're not able to retrieve this information at the moment,
+        please try back later
+      </p>
+    </div>
     <div class="loader" v-if="loader"></div>
-    <div v-else class="photo-wrapper">
+    <div class="photo-wrapper" v-else>
       <div class="collection" v-if="collection.length">
         <CollectionOfPhotos
           v-for="item in collection"
@@ -32,6 +38,7 @@ export default {
     return {
       inputQuery: "",
       loader: false,
+      errored: false,
       photo: {},
       collection: [],
       unsplashBaseUrl: "https://api.unsplash.com/",
@@ -51,8 +58,12 @@ export default {
         )
         .then((response) => {
           this.photo = response.data;
-          this.loader = false;
-        });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        })
+        .finally(() => (this.loader = false));
     },
     getPhotosCollection: async function (data) {
       this.inputQuery = data;
@@ -64,8 +75,12 @@ export default {
         )
         .then((response) => {
           this.collection = response.data.results;
-          this.loader = false;
-        });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        })
+        .finally(() => (this.loader = false));
     },
   },
 };
@@ -91,7 +106,8 @@ export default {
   font: 46px/40px Calistoga;
   text-shadow: 2px 2px 10px rgb(100, 100, 100);
 }
-.subtitle {
+.subtitle,
+.error {
   color: #0e1011;
   font-weight: normal;
 }

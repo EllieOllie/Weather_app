@@ -24,7 +24,7 @@ export default {
       gettingLocation: false,
       errorStr: "",
       apiIP:
-        "https://geo.ipify.org/api/v2/country,city,vpn?apiKey=at_NK47fkgNYSRDGpT9n9CZcFkKnMdrB",
+        "https://geo.ipify.org/api/v2/country,city?apiKey=at_GIBsBMEVaVrD3ob8ONS0coeAjIkd8",
     };
   },
   mounted() {
@@ -44,17 +44,19 @@ export default {
     getUserLoc: async function () {
       this.gettingLocation = true;
 
-      try {
-        await this.axios.get(this.apiIP).then((response) => {
+      await this.axios
+        .get(this.apiIP)
+        .then((response) => {
           this.currentLocation = response.data.location.city;
-          this.gettingLocation = false;
 
           this.$emit("getlocalWeather", this.currentLocation);
-        });
-      } catch (error) {
-        this.gettingLocation = false;
-        this.errorStr = error.message;
-      }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.gettingLocation = false;
+          this.errorStr = error.message;
+        })
+        .finally(() => (this.gettingLocation = false));
     },
   },
   computed: {

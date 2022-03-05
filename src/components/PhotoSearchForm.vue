@@ -7,9 +7,7 @@
         autofocus
         v-model.trim="inputQuery"
       />
-      <p class="error" v-if="errorInput">
-        Value should not be empty!<br />Please, enter only words.
-      </p>
+      <p class="error" v-if="errorInput">Value should not be empty!<br /></p>
     </div>
     <button class="search__btn" type="submit" @click="setQuery">
       <img src="../assets/svg/find.svg" alt="search" />

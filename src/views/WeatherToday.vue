@@ -84,143 +84,159 @@ export default {
      */
     getlocalWeather: async function (loc) {
       this.inputQuery = loc;
-      try {
-        const response = await fetch(
+
+      await this.axios
+        .get(
           `${this.apiBaseURL}weather?q=${this.inputQuery}&appid=${this.keyWeather}&units=metric`
-        );
-        const data = await response.json();
-        this.inputQuery = "";
-        this.weather = data;
+        )
+        .then((response) => {
+          this.weather = response.data;
 
-        // время не точное!!!
-        const getCurrTimeCity = () => {
-          const currHours = data.timezone / 3600;
-          let utcHours = new Date().toUTCString().slice(17, 19);
-          let utcMin = new Date().toUTCString().slice(20, 22);
-          let reasultHours = +utcHours + Math.round(+currHours);
-          reasultHours > 23 ? (reasultHours = reasultHours - 24) : reasultHours;
-          reasultHours < 0 ? (reasultHours = reasultHours + 24) : reasultHours;
-          return `${
-            reasultHours.toString().length === 1
-              ? `0${reasultHours}`
-              : reasultHours
-          }:${utcMin}`;
-        };
-        this.weather.currentTime = getCurrTimeCity();
-        const getWindDirection = () => {
-          let wind = "";
-          const windDir = data.wind.deg;
-          if (
-            (windDir >= 0 && windDir <= 10) ||
-            (windDir >= 351 && windDir <= 360)
-          ) {
-            wind = "north";
-          } else if (windDir >= 11 && windDir <= 80) {
-            wind = "NE";
-          } else if (windDir >= 81 && windDir <= 100) {
-            wind = "east";
-          } else if (windDir >= 101 && windDir <= 170) {
-            wind = "SE";
-          } else if (windDir >= 171 && windDir <= 190) {
-            wind = "south";
-          } else if (windDir >= 191 && windDir <= 260) {
-            wind = "SW";
-          } else if (windDir >= 261 && windDir <= 280) {
-            wind = "west";
-          } else if (windDir >= 281 && windDir <= 350) {
-            wind = "NW";
+          this.inputQuery = "";
+
+          // время не точное!!!
+          const getCurrTimeCity = () => {
+            const currHours = this.weather.timezone / 3600;
+            let utcHours = new Date().toUTCString().slice(17, 19);
+            let utcMin = new Date().toUTCString().slice(20, 22);
+            let reasultHours = +utcHours + Math.round(+currHours);
+            reasultHours > 23
+              ? (reasultHours = reasultHours - 24)
+              : reasultHours;
+            reasultHours < 0
+              ? (reasultHours = reasultHours + 24)
+              : reasultHours;
+            return `${
+              reasultHours.toString().length === 1
+                ? `0${reasultHours}`
+                : reasultHours
+            }:${utcMin}`;
+          };
+          this.weather.currentTime = getCurrTimeCity();
+          const getWindDirection = () => {
+            let wind = "";
+            const windDir = this.weather.wind.deg;
+            if (
+              (windDir >= 0 && windDir <= 10) ||
+              (windDir >= 351 && windDir <= 360)
+            ) {
+              wind = "north";
+            } else if (windDir >= 11 && windDir <= 80) {
+              wind = "NE";
+            } else if (windDir >= 81 && windDir <= 100) {
+              wind = "east";
+            } else if (windDir >= 101 && windDir <= 170) {
+              wind = "SE";
+            } else if (windDir >= 171 && windDir <= 190) {
+              wind = "south";
+            } else if (windDir >= 191 && windDir <= 260) {
+              wind = "SW";
+            } else if (windDir >= 261 && windDir <= 280) {
+              wind = "west";
+            } else if (windDir >= 281 && windDir <= 350) {
+              wind = "NW";
+            }
+            return wind;
+          };
+          this.weather.windDirect = getWindDirection();
+
+          const weatherIcon = this.weather.weather[0].icon;
+          if (weatherIcon.includes("n")) {
+            this.isDay = false;
+          } else {
+            this.isDay = true;
           }
-          return wind;
-        };
-        this.weather.windDirect = getWindDirection();
-
-        const weatherIcon = data.weather[0].icon;
-        if (weatherIcon.includes("n")) {
-          this.isDay = false;
-        } else {
-          this.isDay = true;
-        }
-        const mainWeather = data.weather[0].main;
-        this.weather.icon = `${mainWeather}.svg`;
-        if (mainWeather.includes("Clear")) {
-          weatherIcon.includes("d")
-            ? (this.weather.icon = `${mainWeather}-day.svg`)
-            : (this.weather.icon = `${mainWeather}-night.svg`);
-        }
-        this.errorWeatherInfo = false;
-      } catch (error) {
-        this.errorWeatherInfo = true;
-      }
+          const mainWeather = this.weather.weather[0].main;
+          this.weather.icon = `${mainWeather}.svg`;
+          if (mainWeather.includes("Clear")) {
+            weatherIcon.includes("d")
+              ? (this.weather.icon = `${mainWeather}-day.svg`)
+              : (this.weather.icon = `${mainWeather}-night.svg`);
+          }
+          this.errorWeatherInfo = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errorWeatherInfo = true;
+        });
     },
     getWeather: async function (query) {
       this.imputQuery = query;
-      try {
-        const response = await fetch(
+
+      await this.axios
+        .get(
           `${this.apiBaseURL}weather?q=${query}&appid=${this.keyWeather}&units=metric`
-        );
-        this.weather = await response.json();
+        )
+        .then((response) => {
+          this.weather = response.data;
 
-        // время не точное!!!
-        const getCurrTimeCity = () => {
-          const currHours = this.weather.timezone / 3600;
-          let utcHours = new Date().toUTCString().slice(17, 19);
-          let utcMin = new Date().toUTCString().slice(20, 22);
-          let reasultHours = +utcHours + Math.round(+currHours);
-          reasultHours > 23 ? (reasultHours = reasultHours - 24) : reasultHours;
-          reasultHours < 0 ? (reasultHours = reasultHours + 24) : reasultHours;
-          return `${
-            reasultHours.toString().length === 1
-              ? `0${reasultHours}`
-              : reasultHours
-          }:${utcMin}`;
-        };
-        this.weather.currentTime = getCurrTimeCity();
-        const getWindDirection = () => {
-          let wind = "";
-          const windDir = this.weather.wind.deg;
-          if (
-            (windDir >= 0 && windDir <= 10) ||
-            (windDir >= 351 && windDir <= 360)
-          ) {
-            wind = "north";
-          } else if (windDir >= 11 && windDir <= 80) {
-            wind = "NE";
-          } else if (windDir >= 81 && windDir <= 100) {
-            wind = "east";
-          } else if (windDir >= 101 && windDir <= 170) {
-            wind = "SE";
-          } else if (windDir >= 171 && windDir <= 190) {
-            wind = "south";
-          } else if (windDir >= 191 && windDir <= 260) {
-            wind = "SW";
-          } else if (windDir >= 261 && windDir <= 280) {
-            wind = "west";
-          } else if (windDir >= 281 && windDir <= 350) {
-            wind = "NW";
+          // время не точное!!!
+          const getCurrTimeCity = () => {
+            const currHours = this.weather.timezone / 3600;
+            let utcHours = new Date().toUTCString().slice(17, 19);
+            let utcMin = new Date().toUTCString().slice(20, 22);
+            let reasultHours = +utcHours + Math.round(+currHours);
+            reasultHours > 23
+              ? (reasultHours = reasultHours - 24)
+              : reasultHours;
+            reasultHours < 0
+              ? (reasultHours = reasultHours + 24)
+              : reasultHours;
+            return `${
+              reasultHours.toString().length === 1
+                ? `0${reasultHours}`
+                : reasultHours
+            }:${utcMin}`;
+          };
+          this.weather.currentTime = getCurrTimeCity();
+          const getWindDirection = () => {
+            let wind = "";
+            const windDir = this.weather.wind.deg;
+            if (
+              (windDir >= 0 && windDir <= 10) ||
+              (windDir >= 351 && windDir <= 360)
+            ) {
+              wind = "north";
+            } else if (windDir >= 11 && windDir <= 80) {
+              wind = "NE";
+            } else if (windDir >= 81 && windDir <= 100) {
+              wind = "east";
+            } else if (windDir >= 101 && windDir <= 170) {
+              wind = "SE";
+            } else if (windDir >= 171 && windDir <= 190) {
+              wind = "south";
+            } else if (windDir >= 191 && windDir <= 260) {
+              wind = "SW";
+            } else if (windDir >= 261 && windDir <= 280) {
+              wind = "west";
+            } else if (windDir >= 281 && windDir <= 350) {
+              wind = "NW";
+            }
+            return wind;
+          };
+          this.weather.windDirect = getWindDirection();
+
+          const weatherIcon = this.weather.weather[0].icon;
+          if (weatherIcon.includes("n")) {
+            this.isDay = false;
+          } else {
+            this.isDay = true;
           }
-          return wind;
-        };
-        this.weather.windDirect = getWindDirection();
-
-        const weatherIcon = this.weather.weather[0].icon;
-        if (weatherIcon.includes("n")) {
-          this.isDay = false;
-        } else {
-          this.isDay = true;
-        }
-        const mainWeather = this.weather.weather[0].main;
-        this.weather.icon = `${mainWeather}.svg`;
-        if (mainWeather.includes("Clear")) {
-          weatherIcon.includes("d")
-            ? (this.weather.icon = `${mainWeather}-day.svg`)
-            : (this.weather.icon = `${mainWeather}-night.svg`);
-        }
-        this.errorWeatherInfo = false;
-        this.errorCityFound = false;
-      } catch (error) {
-        this.errorWeatherInfo = true;
-        this.errorCityFound = true;
-      }
+          const mainWeather = this.weather.weather[0].main;
+          this.weather.icon = `${mainWeather}.svg`;
+          if (mainWeather.includes("Clear")) {
+            weatherIcon.includes("d")
+              ? (this.weather.icon = `${mainWeather}-day.svg`)
+              : (this.weather.icon = `${mainWeather}-night.svg`);
+          }
+          this.errorWeatherInfo = false;
+          this.errorCityFound = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errorWeatherInfo = true;
+          this.errorCityFound = true;
+        });
     },
   },
 };

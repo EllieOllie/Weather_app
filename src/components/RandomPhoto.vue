@@ -5,7 +5,8 @@
         <img class="random-photo" :src="photo.urls.regular" width="450" />
       </a>
     </div>
-    <p class="caption">
+    <p class="caption">{{ photo.description }}</p>
+    <p class="link">
       <span>by</span>
       <a :href="photo.user.portfolio_url" target="_blank">
         <b>{{ photo.user.name }}</b>
@@ -48,6 +49,12 @@ a:hover {
   transition: all 0.7s ease-out;
 }
 .caption {
+  padding-bottom: 0.5em;
+  text-align: center;
+  font-weight: inherit;
+  color: #0e1011;
+}
+.link {
   display: flex;
   gap: 5px;
   background: #0e1011;
