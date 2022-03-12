@@ -51,36 +51,32 @@ export default {
   methods: {
     getRandomPhoto: async function () {
       this.loader = true;
-
-      await this.axios
-        .get(
+      try {
+        const response = await this.axios(
           `${this.unsplashBaseUrl}photos/random/?client_id=${this.unsplashAccessKey}`
-        )
-        .then((response) => {
-          this.photo = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-          this.errored = true;
-        })
-        .finally(() => (this.loader = false));
+        );
+        this.photo = await response.data;
+      } catch (error) {
+        console.log(error);
+        this.errored = true;
+      } finally {
+        this.loader = false;
+      }
     },
     getPhotosCollection: async function (data) {
       this.inputQuery = data;
       this.loader = true;
-
-      await this.axios
-        .get(
+      try {
+        const response = await this.axios(
           `${this.unsplashBaseUrl}search/collections/?client_id=${this.unsplashAccessKey}&per_page=20&query=${this.inputQuery}`
-        )
-        .then((response) => {
-          this.collection = response.data.results;
-        })
-        .catch((error) => {
-          console.log(error);
-          this.errored = true;
-        })
-        .finally(() => (this.loader = false));
+        );
+        this.collection = await response.data.results;
+      } catch (error) {
+        console.log(error);
+        this.errored = true;
+      } finally {
+        this.loader = false;
+      }
     },
   },
 };
