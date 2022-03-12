@@ -11,7 +11,7 @@
       </div>
       <div class="nasa-info">
         <a class="nasa-info__img" target="_blank" :href="nasa.hdurl">
-          <img :src="nasa.url" width="250" height="250" alt="nasa" />
+          <img :src="nasa.url" width="250" alt="nasa" />
         </a>
         <h3 class="nasa-info__title">{{ nasa.title }}</h3>
         <p class="nasa-info__caption">{{ nasa.explanation }}</p>
@@ -41,16 +41,17 @@ export default {
   methods: {
     fetchNasaInfo: async function () {
       this.loading = true;
-      await this.axios
-        .get(`${this.nasaBaseURL}apod?api_key=${this.keyNasa}`)
-        .then((response) => {
-          this.nasa = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-          this.errorMsg = true;
-        })
-        .finally(() => (this.loading = false));
+      try {
+        const response = await this.axios(
+          `${this.nasaBaseURL}apod?api_key=${this.keyNasa}`
+        );
+        this.nasa = await response.data;
+      } catch (error) {
+        console.log(error);
+        this.errorMsg = true;
+      } finally {
+        this.loading = false;
+      }
     },
   },
 };

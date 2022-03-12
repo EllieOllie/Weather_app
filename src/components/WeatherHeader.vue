@@ -43,20 +43,16 @@ export default {
   methods: {
     getUserLoc: async function () {
       this.gettingLocation = true;
-
-      await this.axios
-        .get(this.apiIP)
-        .then((response) => {
-          this.currentLocation = response.data.location.city;
-
-          this.$emit("getlocalWeather", this.currentLocation);
-        })
-        .catch((error) => {
-          console.log(error);
-          this.gettingLocation = false;
-          this.errorStr = error.message;
-        })
-        .finally(() => (this.gettingLocation = false));
+      try {
+        const response = await this.axios(this.apiIP);
+        this.currentLocation = await response.data.location.city;
+        this.$emit("getlocalWeather", this.currentLocation);
+      } catch (error) {
+        this.gettingLocation = false;
+        this.errorStr = error.message;
+      } finally {
+        this.gettingLocation = false;
+      }
     },
   },
   computed: {
